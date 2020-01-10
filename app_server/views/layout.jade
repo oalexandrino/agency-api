@@ -1,12 +1,16 @@
 doctype html
 html
-  head
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title= title
-    link(rel='stylesheet', href='/bootstrap/css/amelia/bootstrap.css') 
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  include basic_layout\head
+body
+  include page_layout\navigation
+  include page_layout\header
+  include page_layout\services
+  include page_layout\portfolio_grid
+  include page_layout\about
+  include page_layout\team
+  include page_layout\clients
+  include page_layout\contact
+  include page_layout\footer
+  include page_layout\portfolio_modals
     block content
-script(src='/javascripts/jquery/jquery-3.4.1.min.js')
-script(src='/bootstrap/js/bootstrap.min.js')
-
+include basic_layout\scripts
