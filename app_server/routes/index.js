@@ -1,8 +1,8 @@
 var express = require('express');
-var mainController = require('../controllers/main');
+var homePageController = require('../controllers/homePageController');
 var router = express.Router();
 
 
 /* GET home page. */ 
-router.get('/', mainController.index);
+router.get('/', homePageController.index);
 module.exports = router;
