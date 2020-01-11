@@ -1,4 +1,5 @@
 // Portfolio Grid
+
 section#portfolio.bg-light.page-section
 	.container
 		.row
@@ -6,57 +7,13 @@ section#portfolio.bg-light.page-section
 				h2.section-heading.text-uppercase Portfolio
 				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
 		.row
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal1')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/01-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Threads
-					p.text-muted Illustration
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal2')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/02-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Explore
-					p.text-muted Graphic Design
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal3')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/03-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Finish
-					p.text-muted Identity
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal4')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/04-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Lines
-					p.text-muted Branding
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal5')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/05-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Southwest
-					p.text-muted Website Design
-			.col-md-4.col-sm-6.portfolio-item
-				a.portfolio-link(data-toggle='modal', href='#portfolioModal6')
-					.portfolio-hover
-						.portfolio-hover-content
-							i.fas.fa-plus.fa-3x
-					img.img-fluid(src='/images/agency/portfolio/06-thumbnail.jpg', alt='')
-				.portfolio-caption
-					h4 Window
-					p.text-muted Photography
+			each portfolio in portfolios
+				.col-md-4.col-sm-6.portfolio-item
+					a.portfolio-link(data-toggle='modal', href='#portfolioModal1')
+						.portfolio-hover
+							.portfolio-hover-content
+								i.fas.fa-plus.fa-3x
+						img.img-fluid(src='/images/agency/portfolio/' + portfolio.thumbnail, alt='') 
+					.portfolio-caption
+						h4= portfolio.name
+						p.text-muted= portfolio.description

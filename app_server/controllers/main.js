@@ -1,5 +1,7 @@
-var homePageTemplateView = 'index';
-var homePageDataObject = { title: 'Agency website: Bootstrap, Express and Node.Js' };
-var homepageController = function (req, res) { res.render(homePageTemplateView, homePageDataObject); };
+var homePageDataObject = require('../data/homePageDataObject');
 
-module.exports.index = homepageController;
+var pageInfo = function (req, res) {
+    res.render('index', homePageDataObject);
+};
+
+module.exports.index = pageInfo;
