@@ -3,7 +3,7 @@ var dbURI = 'mongodb://localhost/agency_api'
 var environment = 'DEV environment';
 
 if (process.env.NODE_ENV === 'production') {
-    dbURI = ENV['db_HEROKU_MLAB_URI'];
+    dbURI = process.env.db_HEROKU_MLAB_URI;
     environment = 'production environment';
 }
 
