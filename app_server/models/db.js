@@ -1,21 +1,29 @@
 var mongoose = require('mongoose');
-const dbURI = 'mongodb://localhost/agency_api'
+var dbURI = 'mongodb://localhost/agency_api'
+var environment = 'DEV environment';
+
+if (process.env.NODE_ENV === 'production') {
+    dbURI = process.env.MONGOLAB_URI;
+    environment = 'production environment';
+}
+
+
 const config = {
     autoIndex: false,
     useNewUrlParser: true,
-    useUnifiedTopology: true, 
+    useUnifiedTopology: true,
 };
 
 mongoose.connect(dbURI, config);
 
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose has been connected to: ' + dbURI);
+    console.log('Mongoose has been connected to: ' + dbURI + ' on ' + environment );
 });
 mongoose.connection.on('error', function (err) {
     console.log('Mongoose connection error: ' + err);
 });
 mongoose.connection.on('disconnected', function () {
-    console.log('Mongoose has been disconnected.');
+    console.log('Mongoose has been disconnected from ' + environment);
 });
 
 var secureMongooseShutdown = function (msg, callback) {
