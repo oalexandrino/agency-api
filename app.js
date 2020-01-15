@@ -3,15 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-require('./app_server/models/db');
+// require('./app_server/lib/agency/db/mongo/db');
 
-var indexRouter = require('./app_server/routes/index'); 
+var mongoose = require('mongoose');
+var MongoConnection = require('./app_server/lib/agency/db/mongo/MongoConnection');
+const objConnection = new MongoConnection(mongoose);
+
+objConnection.start();
+
+
+
+var indexRouter = require('./app_server/routes/index');
 var usersRouter = require('./app_server/routes/users');
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'app_server', 'views')); 
+app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
