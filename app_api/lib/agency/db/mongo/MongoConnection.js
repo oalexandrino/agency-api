@@ -107,6 +107,14 @@ class MongoConnection {
         });
     }
 
+    registerSchemas() {
+        try {
+            require('./../../../../models/teamModel');
+        } catch (error) {
+            console.log('Error at registering Schemas: ' + error);
+        }
+    }
+
 };
 
 module.exports = MongoConnection;

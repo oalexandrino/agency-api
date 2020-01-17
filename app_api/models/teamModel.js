@@ -1,6 +1,12 @@
 var mongoose = require('mongoose');
 
 var teamMemberModelSchema = new mongoose.Schema({
+    "email": {
+        "type": String,
+        "required": true,
+        "min": 5,
+        "max": 20
+    },
     "name": {
         "type": String,
         "required": true,
@@ -31,10 +37,6 @@ var teamMemberModelSchema = new mongoose.Schema({
         "min": 20,
         "max": 50
     },
-    "image": {
-        "data": Buffer,
-        "contentType": String
-    }
 });
 
 var teamModelSchema = new mongoose.Schema({
@@ -59,4 +61,4 @@ var teamModelSchema = new mongoose.Schema({
     "team": [teamMemberModelSchema]
 });
 
-mongoose.model('Team', teamModelSchema);
+mongoose.model('team', teamModelSchema);
