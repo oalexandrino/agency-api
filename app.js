@@ -4,10 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
-var MongoConnection = require('./app_server/lib/agency/db/mongo/MongoConnection');
+var MongoConnection = require('./app_api/lib/agency/db/mongo/MongoConnection');
 const objConnection = new MongoConnection(mongoose);
 
 objConnection.start();
+objConnection.registerSchemas();
 var app = express();
 
 // routes
