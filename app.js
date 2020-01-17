@@ -13,7 +13,7 @@ var app = express();
 
 // routes
 var indexRouter = require('./app_server/routes/index');
-var routesApi  = require('./app_api/routes/index');
+var routesApi  = require('./app_api/routes/api_routers');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
