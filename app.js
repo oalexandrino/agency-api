@@ -3,20 +3,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-// require('./app_server/lib/agency/db/mongo/db');
-
 var mongoose = require('mongoose');
 var MongoConnection = require('./app_server/lib/agency/db/mongo/MongoConnection');
 const objConnection = new MongoConnection(mongoose);
 
 objConnection.start();
+var app = express();
 
 // routes
-var routesApi  = require('./app_api/routes/index');
 var indexRouter = require('./app_server/routes/index');
-var usersRouter = require('./app_server/routes/users');
-
-var app = express();
+var routesApi  = require('./app_api/routes/index');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
@@ -28,10 +24,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // using routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/api', routesApi);
 
 // catch 404 and forward to error handler
@@ -51,3 +45,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
