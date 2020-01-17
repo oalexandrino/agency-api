@@ -3,5 +3,5 @@ var router = express.Router();
 var teamController = require('../controllers/teamController');
 
 router.get('/team', teamController.teamListing);
-router.get('/team/:teamMemberId', teamController.getTeamMember);
+router.get('/team/:email', teamController.getTeamMember);
 module.exports = router;
