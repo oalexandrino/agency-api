@@ -13,17 +13,16 @@ module.exports.teamListing = function (req, res) {
 };
 
 module.exports.getTeamMember = function (req, res) {
-    console.log(req.params.email);
-    TeamModel.find({"team": {email:  req.params.email}  }).exec(function(err, team) {
-        if (!team) {
-            sendJsonResponse(res, 404, {"message": "team member information is not found"});
-            return;
-        } else if (err) {
-            console.log(err);
-            sendJsonResponse(res, 404, err);
-            return;
-        }
-        console.log(team);
-        sendJsonResponse(res, 200, team);
-      });
+
+    TeamModel
+        .find({ "team.email": req.params.email }, {'team.$': 1})
+        .exec(function (err, team) {
+            loginfo = team;
+            if (err) {
+                loginfo = err;
+                sendJsonResponse(res, 404, err); 
+            } 
+            console.log(loginfo);
+            sendJsonResponse(res, 200, team);
+        });
 };

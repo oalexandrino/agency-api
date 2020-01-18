@@ -8,7 +8,7 @@ class MongoConnection {
 
     constructor(mongooseObj) {
         this.mongooseObj = mongooseObj;
-        this.dbURI = 'mongodb://localhost/agency_api'
+        this.dbURI = 'mongodb://localhost/agency_api';
         this.environment = 'DEV environment';
         this.secureMongooseShutdown = function (msg, callback) {
             mongooseObj.connection.close(function () {
