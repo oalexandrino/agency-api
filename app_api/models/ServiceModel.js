@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var servicesModelSchema = new mongoose.Schema({
+var serviceModelSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -12,11 +12,11 @@ var servicesModelSchema = new mongoose.Schema({
         required: true,
         min: 20,
         max: 50
-    },
-    image: {
-            data: Buffer,
-            contentType: String
-    },
-});
+    }},{
+        collection: 'service'
+    }
+);
 
-mongoose.model('Services', servicesModelSchema);
+
+serviceModelSchema.set('collection', 'service');
+mongoose.model('service', serviceModelSchema);
