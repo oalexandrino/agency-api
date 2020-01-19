@@ -13,3 +13,5 @@ var responseUtilities =  {
     }
     
 }
+
+module.exports = responseUtilities;

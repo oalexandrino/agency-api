@@ -109,7 +109,8 @@ class MongoConnection {
 
     registerSchemas() {
         try {
-            require('./../../../../models/teamModelSchema');
+            require('./../../../../models/teamModel');
+            require('./../../../../models/ServiceModel');
         } catch (error) {
             console.log('Error at registering Schemas: ' + error);
         }

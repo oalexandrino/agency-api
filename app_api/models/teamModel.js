@@ -63,4 +63,3 @@ var teamModelSchema = new mongoose.Schema({
 
 teamModelSchema.set('collection', 'team');
 mongoose.model('team', teamModelSchema);
-;
