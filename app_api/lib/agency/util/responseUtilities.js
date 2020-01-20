@@ -1,7 +1,7 @@
 var responseUtilities =  {
 
-    sendJsonResponse: function (res, err, content) {
-        var httpStatus = 200;
+    sendJsonResponse: function (res, err, content, httpStatus = 200) {
+        console.log(httpStatus);
         if (err) {
             content = err;
             httpStatus = 404;
@@ -11,7 +11,7 @@ var responseUtilities =  {
         res.status(httpStatus);
         res.json(content);
     }
-    
+
 }
 
 module.exports = responseUtilities;
