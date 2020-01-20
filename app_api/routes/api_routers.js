@@ -9,6 +9,7 @@ router.get('/service/', serviceController.serviceListing);
 router.get('/service/:idService', serviceController.getService);
 
 // routes for team model
+router.post('/team/', teamController.addTeamMember);
 router.get('/team/info', teamController.teamInfo);
 router.get('/team/title', teamController.title);
 router.get('/team/headline', teamController.headline);
