@@ -9,12 +9,12 @@ router.get('/service/', serviceController.serviceListing);
 router.get('/service/:idService', serviceController.getService);
 
 // routes for team model
+router.get('/team/', teamController.teamInfo);
 router.post('/team/', teamController.addTeamMember);
-router.get('/team/info', teamController.teamInfo);
+router.get('/team/members/', teamController.members);
 router.get('/team/title', teamController.title);
 router.get('/team/headline', teamController.headline);
 router.get('/team/description', teamController.description);
-router.get('/team', teamController.team);
 router.get('/team/:email', teamController.getTeamMember);
 
 module.exports = router;

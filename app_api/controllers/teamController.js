@@ -27,8 +27,8 @@ module.exports.description = function (req, res) {
     });
 };
 
-module.exports.team = function (req, res) {
-    TeamModel.find().select("team").exec(function (err, content) {
+module.exports.members = function (req, res) {
+    TeamModel.find().select("members").exec(function (err, content) {
         responseUtilities.sendJsonResponse(res, err, content);
     });
 };
@@ -36,7 +36,7 @@ module.exports.team = function (req, res) {
 module.exports.getTeamMember = function (req, res) {
 
     TeamModel
-        .find({ "team.email": req.params.email }, { 'team.$': 1 })
+        .find({ "members.email": req.params.email }, { 'members.$': 1 })
         .exec(function (err, content) {
             responseUtilities.sendJsonResponse(res, err, content);
         });
