@@ -8,6 +8,7 @@ class MongoConnection {
 
     constructor(mongooseObj) {
         this.mongooseObj = mongooseObj;
+        //this.mongooseObj.set('useFindAndModify', false);
         this.dbURI = 'mongodb://localhost/agency_api';
         this.environment = 'DEV environment';
         this.secureMongooseShutdown = function (msg, callback) {

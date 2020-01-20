@@ -58,7 +58,7 @@ var teamModelSchema = new mongoose.Schema({
         "min": 5,
         "max": 80
     },
-    "team": [teamMemberModelSchema]
+    "members": [teamMemberModelSchema]
 }, { collection: 'team' });
 
 teamModelSchema.set('collection', 'team');
