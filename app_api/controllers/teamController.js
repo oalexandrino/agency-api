@@ -125,7 +125,23 @@ module.exports.addTeamMember = function (req, res) {
 };
 
 module.exports.teamInfoUpdate = function (req, res) {
+
     TeamModel.find().exec(function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, content);
+
+        var title = req.body.title;
+        var headline = req.body.headline;
+        var description = req.body.description;
+        var doc  = { id: content[0].description.id };
+
+        var options = { $set: { id: content[0].id,
+                                description: description,
+                                headline: headline,
+                                title: title,
+                                members: content[0].members,
+                                }};
+
+        TeamModel.updateOne(doc, options,function (err, content) {
+            responseUtilities.sendJsonResponse(res, err, { "message": "Team info has been updated successful." });
+        });
     });
 }
