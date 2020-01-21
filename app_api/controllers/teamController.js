@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
-//var TeamMember = mongoose.model('member');
 var responseUtilities = require("../lib/agency/util/responseUtilities");
 
 module.exports.teamInfo = function (req, res ) {
@@ -42,12 +41,27 @@ module.exports.getTeamMember = function (req, res) {
         });
 };
 
-var locateMember = async function (email) {
+module.exports.removeMember = function (req, res) {
+    var email = req.body.email;
     TeamModel
         .find({ "members.email": email }, { 'members.$': 1 })
-        .exec(function (err, content) {
-            console.log(content[0]);
-            locateMember.member = content;
+        .exec(function (err, result) {
+            if ( result.length >0  && typeof  result[0].members[0].email === 'string' )
+            {
+                var foundEmail = result[0].members[0].email;
+                var foundId = result[0].members[0].id;
+
+                TeamModel.findOne({'members.email': email}, function (err, result2) {
+                    result2.members.id(foundId).remove();
+                    result2.save().then(
+                        responseUtilities.sendJsonResponse(res, err, { "message": "member has been removed successful" })
+                    );
+                });
+            }
+            else
+            {
+                responseUtilities.sendJsonResponse(res, err, { "message": "email not found" }, 404);
+            }
         });
 }
 
