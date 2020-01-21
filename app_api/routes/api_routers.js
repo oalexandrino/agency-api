@@ -8,12 +8,15 @@ router.post('/service/', serviceController.save);
 router.get('/service/', serviceController.serviceListing);
 router.get('/service/:idService', serviceController.getService);
 
+// routes for member model
+router.post('/team/members/', teamController.addTeamMember);
+router.get('/team/members/', teamController.members);
+router.delete('/team/members/', teamController.removeMember);
+router.get('/team/members/:email', teamController.getTeamMember);
+
 // routes for team model
 router.get('/team/', teamController.teamInfo);
-router.post('/team/', teamController.addTeamMember);
-router.post('/team/members/', teamController.removeMember);
-router.get('/team/members/', teamController.members);
-router.get('/team/members/:email', teamController.getTeamMember);
+router.put('/team/', teamController.teamInfoUpdate);
 router.get('/team/title', teamController.title);
 router.get('/team/headline', teamController.headline);
 router.get('/team/description', teamController.description);

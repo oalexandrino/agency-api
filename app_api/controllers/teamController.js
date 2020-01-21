@@ -63,7 +63,7 @@ module.exports.removeMember = function (req, res) {
                 responseUtilities.sendJsonResponse(res, err, { "message": "email not found" }, 404);
             }
         });
-}
+};
 
 module.exports.addTeamMember = function (req, res) {
 
@@ -123,3 +123,9 @@ module.exports.addTeamMember = function (req, res) {
         });
 
 };
+
+module.exports.teamInfoUpdate = function (req, res) {
+    TeamModel.find().exec(function (err, content) {
+        responseUtilities.sendJsonResponse(res, err, content);
+    });
+}
