@@ -7,6 +7,8 @@ var serviceController = require('../controllers/serviceController');
 router.post('/service/', serviceController.save);
 router.get('/service/', serviceController.serviceListing);
 router.get('/service/:idService', serviceController.getService);
+router.delete('/service/', serviceController.delete);
+router.put('/service/', serviceController.update);
 
 // routes for member model
 router.post('/team/members/', teamController.addTeamMember);
