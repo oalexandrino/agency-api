@@ -4,13 +4,13 @@ var serviceModelSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        min: 5,
+        min: 3,
         max: 20
     },
     description: {
         type: String,
         required: true,
-        min: 20,
+        min: 3,
         max: 50
     }},{
         collection: 'service'
