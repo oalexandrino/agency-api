@@ -70,16 +70,19 @@ module.exports.removeMember = function (req, res) {
 module.exports.addTeamMember = function (req, res) {
 
     var email = req.body.email;
+
+    // checks if there is already a email
     TeamModel
         .find({ "members.email": email }, { 'members.$': 1 })
         .exec(function (err, content) {
-            if ( content.length >0  && typeof content[0].members[0].email === 'string' )
+
+            if ( content.length >0  || typeof content[0].members[0].email === 'string' )
             {
                 responseUtilities.sendJsonResponse(res, err, { "message": "Member could not be added. E-mail provided is in use." }, 409);
             }
             else
             {
-
+                // gets the teaminfo
                 TeamModel.find( TeamModel ).exec(
                     function (err, teamInfo) {
                         if (err) {
@@ -111,6 +114,7 @@ module.exports.addTeamMember = function (req, res) {
 
                             console.log(req.body.email);
 
+                            //includes the new member
                             TeamModel.updateOne(doc, options, function (err, result) {
                                 var message = "User has been created.";
                                 responseUtilities.sendJsonResponse(res, err, { "message": message });
