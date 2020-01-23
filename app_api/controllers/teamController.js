@@ -108,9 +108,9 @@ module.exports.addTeamMember = function (req, res) {
                                                     title: teamInfo[0].title,
                                                     members: teamInfo[0].members,
                                                     }};
-                            
+
                             console.log(req.body.email);
-                            
+
                             TeamModel.updateOne(doc, options, function (err, result) {
                                 var message = "User has been created.";
                                 responseUtilities.sendJsonResponse(res, err, { "message": message });
@@ -127,25 +127,23 @@ module.exports.teamInfoUpdate = function (req, res) {
 
     TeamModel.find().exec(function (err, content) {
 
-        var title = req.body.title;
-        var headline = req.body.headline;
-        var description = req.body.description;
         var doc  = { id: content[0].description.id };
-
         var options = { $set: { id: content[0].id,
-                                description: description,
-                                headline: headline,
-                                title: title,
+                                description: req.body.description,
+                                headline: req.body.headline,
+                                title: req.body.title,
                                 members: content[0].members,
                                 }};
 
         TeamModel.updateOne(doc, options, function (err, result) {
+
             var message = "Team info has been updated successful.";
             if (!result) {
                 message = "Error at updating the Team info.";
             }
             responseUtilities.sendJsonResponse(res, err, { "message": message });
+
         });
-        
+
     });
 }
