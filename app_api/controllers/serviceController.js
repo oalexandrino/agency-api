@@ -52,12 +52,11 @@ module.exports.getService = function (req, res) {
             if (!result) {
                 result = data;
             }
-
             responseUtilities.sendJsonResponse(res, err, result);
         });
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "Service id is not valid." });
-    }    
+    }
     
 
 };
@@ -72,7 +71,11 @@ module.exports.save = function (req, res) {
     ServiceModel.create({
         title: req.body.title,
         description: req.body.description
-    }, function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, content);
+    }, function (err, result) {
+            var message = "Service has been created successful.";
+            if (!result) {
+                message = "Error at creating the service.";
+            }
+            responseUtilities.sendJsonResponse(res, err, { "message": message });
     });
 };
