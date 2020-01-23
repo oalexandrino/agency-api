@@ -37,7 +37,9 @@ module.exports.getTeamMember = function (req, res) {
     TeamModel
         .find({ "members.email": req.params.email }, { 'members.$': 1 })
         .exec(function (err, content) {
-            responseUtilities.sendJsonResponse(res, err, content);
+            if (content.length === 0)
+                content = {"message": "Member not found."};
+             responseUtilities.sendJsonResponse(res, err, content);
         });
 };
 
@@ -54,13 +56,13 @@ module.exports.removeMember = function (req, res) {
                 TeamModel.findOne({'members.email': email}, function (err, result2) {
                     result2.members.id(foundId).remove();
                     result2.save().then(
-                        responseUtilities.sendJsonResponse(res, err, { "message": "member has been removed successful" })
+                        responseUtilities.sendJsonResponse(res, err, { "message": "Member has been removed successful" })
                     );
                 });
             }
             else
             {
-                responseUtilities.sendJsonResponse(res, err, { "message": "email not found" }, 404);
+                responseUtilities.sendJsonResponse(res, err, { "message": "Member could not be removed. E-mail not found." }, 404);
             }
         });
 };
@@ -71,9 +73,9 @@ module.exports.addTeamMember = function (req, res) {
     TeamModel
         .find({ "members.email": email }, { 'members.$': 1 })
         .exec(function (err, content) {
-            if ( content.length >0  && typeof  content[0].members[0].email === 'string' )
+            if ( content.length >0  && typeof content[0].members[0].email === 'string' )
             {
-                responseUtilities.sendJsonResponse(res, err, { "message": "email in use" }, 409);
+                responseUtilities.sendJsonResponse(res, err, { "message": "Member could not be added. E-mail provided is in use." }, 409);
             }
             else
             {
@@ -106,15 +108,12 @@ module.exports.addTeamMember = function (req, res) {
                                                     title: teamInfo[0].title,
                                                     members: teamInfo[0].members,
                                                     }};
-
-                             TeamModel.updateOne(doc, options,function (err, teamInfo) {
-                                if (err) {
-                                    data = teamInfo;
-                                }
-                                else {
-                                    data = thisMember;
-                                }
-                                responseUtilities.sendJsonResponse(res, err, data);
+                            
+                            console.log(req.body.email);
+                            
+                            TeamModel.updateOne(doc, options, function (err, result) {
+                                var message = "User has been created.";
+                                responseUtilities.sendJsonResponse(res, err, { "message": message });
                              }
                             )};
                         }
@@ -140,8 +139,13 @@ module.exports.teamInfoUpdate = function (req, res) {
                                 members: content[0].members,
                                 }};
 
-        TeamModel.updateOne(doc, options,function (err, content) {
-            responseUtilities.sendJsonResponse(res, err, { "message": "Team info has been updated successful." });
+        TeamModel.updateOne(doc, options, function (err, result) {
+            var message = "Team info has been updated successful.";
+            if (!result) {
+                message = "Error at updating the Team info.";
+            }
+            responseUtilities.sendJsonResponse(res, err, { "message": message });
         });
+        
     });
 }
