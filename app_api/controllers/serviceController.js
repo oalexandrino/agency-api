@@ -63,7 +63,7 @@ module.exports.getService = function (req, res) {
 
 module.exports.serviceListing = function (req, res) {
     ServiceModel.find().exec(function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, content);
+        responseUtilities.sendJsonResponse(res, err, { "services": content });
     });
 };
 
