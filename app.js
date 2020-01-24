@@ -1,3 +1,4 @@
+var request = require('request');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose');
 var MongoConnection = require('./app_api/lib/agency/db/mongo/MongoConnection');
+var ApiConfiguration = require('./app_api/lib/agency/ApiConfiguration');
 const objConnection = new MongoConnection(mongoose);
 
 objConnection.start();
