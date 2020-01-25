@@ -23,13 +23,14 @@ var homePageInfo = function (req, res) {
         }];*/
     
     // create request objects
-    var requests = [ {
-        url: ApiConfiguration.getApiURL() + '/api/team/members/',
+    var url = ApiConfiguration.getApiURL();
+    var requests = {
+        url: url + '/api/team/members/',
         headers: {
             'Bearer': 'sampleapitoken'
         }
-    }];
-
+    };
+ 
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {
             return JSON.parse(body);
