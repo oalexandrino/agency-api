@@ -25,12 +25,13 @@ var homePageInfo = function (req, res) {
     // create request objects
     var url = ApiConfiguration.getApiURL();
     var requests = [ {
-        url: 'https://agency-angular-express-node.herokuapp.com/api/team/members/',
+        url: url + '/api/team/members/',
         headers: {
             'Bearer': 'sampleapitoken'
         }
     }];
-
+    
+    console.log("url: " + requests[0].url);
 
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {

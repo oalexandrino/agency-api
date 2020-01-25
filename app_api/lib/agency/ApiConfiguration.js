@@ -2,7 +2,7 @@ var request = require('request');
 
 var apiOptions = {
     dev: "http://localhost:3000",
-    production: "https://agency-angular-express-node.herokuapp.com/"
+    production: "https://agency-angular-express-node.herokuapp.com"
 };
 
 
