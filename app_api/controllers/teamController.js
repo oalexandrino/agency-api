@@ -28,7 +28,7 @@ module.exports.description = function (req, res) {
 
 module.exports.members = function (req, res) {
     TeamModel.find().select("members").exec(function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, content);
+        responseUtilities.sendJsonResponse(res, err, { "team" : content });
     });
 };
 

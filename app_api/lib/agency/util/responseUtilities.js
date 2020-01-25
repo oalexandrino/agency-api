@@ -7,6 +7,7 @@ var responseUtilities =  {
         }
 
         console.log("Result: " + content);
+        
         res.status(httpStatus);
         res.json(content);
     }

@@ -7,50 +7,22 @@ section#team.bg-light.page-section
 				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
 		.row
 			.col-sm-4
-				.team-member
-					img.mx-auto.rounded-circle(src='/images/agency/team/1.jpg', alt='')
-					h4 Kay Garland
-					p.text-muted Lead Designer
-					ul.list-inline.social-buttons
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-twitter
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-facebook-f
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-linkedin-in
-			.col-sm-4
-				.team-member
-					img.mx-auto.rounded-circle(src='/images/agency/team/2.jpg', alt='')
-					h4 Larry Parker
-					p.text-muted Lead Marketer
-					ul.list-inline.social-buttons
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-twitter
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-facebook-f
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-linkedin-in
-			.col-sm-4
-				.team-member
-					img.mx-auto.rounded-circle(src='/images/agency/team/3.jpg', alt='')
-					h4 Diana Pertersen
-					p.text-muted Lead Developer
-					ul.list-inline.social-buttons
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-twitter
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-facebook-f
-						li.list-inline-item
-							a(href='#')
-								i.fab.fa-linkedin-in
+			if team
+				each member in team[0].members
+					.team-member
+						img.mx-auto.rounded-circle(src='/images/agency/team/1.jpg', alt='')
+						h4= member.name
+						p.text-muted Lead Designer
+						ul.list-inline.social-buttons
+							li.list-inline-item
+								a(href='#')
+									i.fab.fa-twitter
+							li.list-inline-item
+								a(href='#')
+									i.fab.fa-facebook-f
+							li.list-inline-item
+								a(href='#')
+									i.fab.fa-linkedin-in
 		.row
 			.col-lg-8.mx-auto.text-center
 				p.large.text-muted
