@@ -16,6 +16,7 @@ class ApiConfiguration {
             url = apiOptions.production;
         } else {
             url = apiOptions.dev;
+        }
 
         return url;
 
