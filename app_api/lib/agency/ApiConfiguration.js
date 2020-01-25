@@ -17,9 +17,7 @@ class ApiConfiguration {
         } else {
             url = apiOptions.dev;
         }
-        
-        console.log("url: " + url);
-        
+
         return url;
 
     }
