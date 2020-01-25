@@ -7,20 +7,18 @@ var apiOptions = {
 
 
 class ApiConfiguration {
-    
-    static setAppOptions() {
 
-        if (process.env.NODE_ENV === 'production') {
-            this.server = apiOptions.production;
-        } else {
-            this.server = apiOptions.dev;
-        }
-
-    }
     
     static getApiURL() {
-        this.setAppOptions();
-        return this.server;
+
+        var url;
+        if (process.env.NODE_ENV === 'production') {
+            url = apiOptions.production;
+        } else {
+            url = apiOptions.dev;
+
+        return url;
+
     }
     
     constructor() {
