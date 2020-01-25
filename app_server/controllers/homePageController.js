@@ -30,8 +30,6 @@ var homePageInfo = function (req, res) {
             'Bearer': 'sampleapitoken'
         }
     }];
-    
-    console.log("url: " + requests[0].url);
 
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {
