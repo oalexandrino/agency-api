@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var teamController = require('../controllers/teamController');
 var serviceController = require('../controllers/serviceController');
+var portfolioController = require('../controllers/portfolioController');
+
+// routes for firebase portfolio
+router.get('/portfolio/', portfolioController.portfolioListing);
 
 // routes for service model
 router.post('/service/', serviceController.save);

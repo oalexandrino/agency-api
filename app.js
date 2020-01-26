@@ -4,19 +4,31 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+// api configuration
+var ApiConfiguration = require('./app_api/lib/agency/ApiConfiguration');
+
+// mongo
 var mongoose = require('mongoose');
 var MongoConnection = require('./app_api/lib/agency/db/mongo/MongoConnection');
-var ApiConfiguration = require('./app_api/lib/agency/ApiConfiguration');
 const objConnection = new MongoConnection(mongoose);
-
 objConnection.start();
 objConnection.registerSchemas();
+
+// express app
 var app = express();
+
+// firebase
+//const functions = require("firebase-functions");
+const firebase = require('firebase');
+var FirebaseConnection = require('./app_api/lib/agency/db/firebase/FirebaseConnection');
+const objFirebaseConnection = new FirebaseConnection(firebase);
 
 // routes
 var indexRouter = require('./app_server/routes/index');
 var routesApi  = require('./app_api/routes/api_routers');
 
+// catching and disabling favicon error
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 // view engine setup
@@ -49,4 +61,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = app, objFirebaseConnection;
