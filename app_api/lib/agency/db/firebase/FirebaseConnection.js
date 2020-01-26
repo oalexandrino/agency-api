@@ -14,26 +14,8 @@ class FirebaseConnection {
         
         firebase.initializeApp(firebaseConfig);
         this.database = firebase.firestore();
-        
-        /*
-        var database = firebase.firestore();
-        let portfolio = database.collection('portfolio');
-        let allPortfolio = portfolio.get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    console.log(doc.id, '=>', doc.data());
-                });
-            })
-            .catch(err => {
-                console.log('Error getting documents', err);
-            });*/
+  
     }
-    
-    getDatabase() {
-        return this.database;
-    }
-
-    
 }
 
 module.exports = FirebaseConnection;
