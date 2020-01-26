@@ -1,4 +1,4 @@
-var homePageDataObject = require('../../app_api/models/data/homePageDataObject');
+//var homePageDataObject = require('../../app_api/models/data/homePageDataObject');
 var ApiConfiguration = require('../../app_api/lib/agency/ApiConfiguration');
 var request = require('request');
 var Promise = require("bluebird");
@@ -6,50 +6,43 @@ var request = require('request-promise');
 
 
 var homePageInfo = function (req, res) {
-    
-    
-    // create request objects
-    /*
-    var requests = [{
-        url: ApiConfiguration.getApiURL() + '/api/service/',
-        headers: {
-            'Bearer': 'sampleapitoken'
-        }
-    }, {
-            url: ApiConfiguration.getApiURL() + '/api/team/members/',
-        headers: {
-            'Bearer': 'sampleapitoken'
-        }
-        }];*/
-    
+
     // create request objects
     var url = ApiConfiguration.getApiURL();
-    var requests = [ {
-        url: url + '/api/team/members/',
-        headers: {
-            'Bearer': 'sampleapitoken'
-        }
-    }];
+    var requests = [{
+            url: url + '/api/team/members/',
+            headers: {'headers': 'apitoken'}},
+        {
+            url: url + '/api/service/',
+            headers: {'headers': 'apitoken'}}
+    ];
 
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {
             return JSON.parse(body);
         });
     }).then(function (results) {
-        console.log(results);
+
         var output = [];
         for (var i = 0; i < results.length; i++) {
-            //output.push(results[i]);
-            res.render('index', results[i]);
             
+            output.push(results[i]);
+
         }
-        //res.render('index', output);
-    
+        
+        var homePageData = { "homePageData": output };
+        
+        console.log("output: ");
+        console.log(homePageData);
+        
+        res.render('index', homePageData);
+
     }, function (err) {
-        // handle all your errors here
+        if (err)
+            console.log(err);
     });
 
-    
+
     /*
 
     var requestOptions, path;

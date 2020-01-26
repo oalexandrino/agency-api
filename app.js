@@ -17,6 +17,8 @@ var app = express();
 var indexRouter = require('./app_server/routes/index');
 var routesApi  = require('./app_api/routes/api_routers');
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'app_server', 'views'));
 app.set('view engine', 'jade');
