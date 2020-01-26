@@ -4,10 +4,10 @@ section#services.page-section
 		.row
 			.col-lg-12.text-center
 				h2.section-heading.text-uppercase Services
-				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
+				h3.section-subheading.text-muted= homePageData[1].services[0].title
 		.row.text-center
-			if services
-				each service in services
+			if homePageData[1].services
+				each service in homePageData[1].services
 					.col-md-4
 						span.fa-stack.fa-4x
 							i.fas.fa-circle.fa-stack-2x.text-primary

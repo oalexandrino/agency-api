@@ -6,7 +6,7 @@ var responseUtilities =  {
             httpStatus = 404;
         }
 
-        console.log("Result: " + content);
+       // console.log("Result: " + content);
         
         res.status(httpStatus);
         res.json(content);
