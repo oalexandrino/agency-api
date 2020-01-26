@@ -7,15 +7,14 @@ section#portfolio.bg-light.page-section
 				h2.section-heading.text-uppercase Portfolio
 				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
 		.row
-			if portfolioData
-				if portfolioData.portfolios
-					each portfolio in portfolioData.portfolios
-						.col-md-4.col-sm-6.portfolio-item
-							a.portfolio-link(data-toggle='modal', href='#portfolioModal1')
-								.portfolio-hover
-									.portfolio-hover-content
-										i.fas.fa-plus.fa-3x
-								img.img-fluid(src='/images/agency/portfolio/' + portfolio.thumbnail, alt='')
-							.portfolio-caption
-								h4= portfolio.name
-								p.text-muted= portfolio.description
+			if homePageData[2].portfolios
+				each portfolio in homePageData[2].portfolios
+					.col-md-4.col-sm-6.portfolio-item
+						a.portfolio-link(data-toggle='modal', href='#portfolioModal1')
+							.portfolio-hover
+								.portfolio-hover-content
+									i.fas.fa-plus.fa-3x
+							img.img-fluid(src='/images/agency/portfolio/01-thumbnail.jpg', alt='')
+						.portfolio-caption
+							h4= portfolio.name
+							p.text-muted= portfolio.description

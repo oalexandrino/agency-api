@@ -14,7 +14,12 @@ var homePageInfo = function (req, res) {
             headers: {'headers': 'apitoken'}},
         {
             url: url + '/api/service/',
-            headers: {'headers': 'apitoken'}}
+            headers: { 'headers': 'apitoken' }
+        },
+        {
+            url: url + '/api/portfolio/',
+            headers: { 'headers': 'apitoken' }
+        }
     ];
 
     Promise.map(requests, function (obj) {
