@@ -4,6 +4,9 @@ var teamController = require('../controllers/teamController');
 var serviceController = require('../controllers/serviceController');
 var portfolioController = require('../controllers/portfolioController');
 
+// routes for saving images
+router.post('/team/members/image/', teamController.addImage);
+
 // routes for firebase portfolio
 router.get('/portfolio/', portfolioController.portfolioListing);
 

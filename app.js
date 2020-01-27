@@ -25,7 +25,7 @@ var FirebaseConnection = require('./app_api/lib/agency/db/firebase/FirebaseConne
 const objFirebaseConnection = new FirebaseConnection(firebase);
 
 // routes
-var indexRouter = require('./app_server/routes/index');
+var indexRouter = require('./app_server/routes/server_routers');
 var routesApi  = require('./app_api/routes/api_routers');
 
 // catching and disabling favicon error

@@ -151,3 +151,12 @@ module.exports.teamInfoUpdate = function (req, res) {
 
     });
 }
+
+module.exports.addImage = function (req, res) {
+
+        
+    var message = `Method to upload image`; 
+    
+    responseUtilities.sendJsonResponse(res, false, { "message": message });
+
+}
