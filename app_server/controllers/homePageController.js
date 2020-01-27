@@ -37,8 +37,8 @@ var homePageInfo = function (req, res) {
         
         var homePageData = { "homePageData": output };
         
-        console.log("output: ");
-        console.log(homePageData);
+        // console.log("output: ");
+        // console.log(homePageData);
         
         res.render('index', homePageData);
 

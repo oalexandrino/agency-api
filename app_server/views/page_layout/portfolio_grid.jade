@@ -8,13 +8,13 @@ section#portfolio.bg-light.page-section
 				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
 		.row
 			if homePageData[2].portfolios
-				each portfolio in homePageData[2].portfolios
+				each portfolio, index in homePageData[2].portfolios
 					.col-md-4.col-sm-6.portfolio-item
-						a.portfolio-link(data-toggle='modal', href='#portfolioModal1')
+						a.portfolio-link(data-toggle='modal', href='#portfolioModal' + index)
 							.portfolio-hover
 								.portfolio-hover-content
 									i.fas.fa-plus.fa-3x
 							img.img-fluid(src='/images/agency/portfolio/01-thumbnail.jpg', alt='')
 						.portfolio-caption
 							h4= portfolio.name
-							p.text-muted= portfolio.description
+							p.text-muted= portfolio.desc
