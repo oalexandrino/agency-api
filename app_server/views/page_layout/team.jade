@@ -9,7 +9,7 @@ section#team.bg-light.page-section
 			if homePageData[0].team[0].members
 				each member in homePageData[0].team[0].members
 					.col-sm-4
-						.team-member 
+						.team-member
 							img.mx-auto.rounded-circle(src=homePageData[3].teamMemberImages[member.email], alt='')
 							h4= member.name
 							p.text-muted= member.role

@@ -70,7 +70,8 @@ module.exports.serviceListing = function (req, res) {
 module.exports.save = function (req, res) {
     ServiceModel.create({
         title: req.body.title,
-        description: req.body.description
+        description: req.body.description,
+        fontawesomeIcon: req.body.fontawesomeIcon
     }, function (err, result) {
             var message = "Service has been created successful.";
             if (!result) {

@@ -12,10 +12,18 @@ var serviceModelSchema = new mongoose.Schema({
         required: true,
         min: 3,
         max: 50
+    },
+    fontawesomeIcon: {
+        type: String,
+        required: true,
+        min: 3,
+        max: 50
     }},{
         collection: 'service'
     }
 );
+
+
 
 
 serviceModelSchema.set('collection', 'service');
