@@ -20,8 +20,13 @@ var homePageInfo = function (req, res) {
             url: url + '/api/portfolio/',
             headers: { 'headers': 'apitoken' }
         }
+        ,
+        {
+            url: url + '/api/team/image/',
+            headers: { 'headers': 'apitoken' }
+        }
     ];
-
+   
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {
             return JSON.parse(body);

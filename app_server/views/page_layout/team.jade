@@ -4,13 +4,13 @@ section#team.bg-light.page-section
 		.row
 			.col-lg-12.text-center
 				h2.section-heading.text-uppercase Our Amazing Team
-				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
+				h3.section-subheading.text-muted
 		.row
 			if homePageData[0].team[0].members
 				each member in homePageData[0].team[0].members
 					.col-sm-4
-						.team-member
-							img.mx-auto.rounded-circle(src='/images/agency/team/1.jpg', alt='')
+						.team-member 
+							img.mx-auto.rounded-circle(src=homePageData[3].teamMemberImages[member.email], alt='')
 							h4= member.name
 							p.text-muted= member.role
 							ul.list-inline.social-buttons

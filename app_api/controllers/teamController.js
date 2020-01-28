@@ -10,6 +10,23 @@ module.exports.teamInfo = function (req, res) {
     });
 };
 
+module.exports.getTeamMemberImages = function (req, res) {
+    TeamImageModel.find().exec(function (err, content) {
+
+        var users = {};
+        
+        for (let index = 0; index < content.length; index++) {
+            const user = content[index];
+            users[user.email] = user.cloudImage;
+
+        }
+
+        responseUtilities.sendJsonResponse(res, err, { "teamMemberImages": users}  );
+    });
+};
+
+
+
 module.exports.title = function (req, res) {
     TeamModel.find().select("title").exec(function (err, content) {
         responseUtilities.sendJsonResponse(res, err, content);
