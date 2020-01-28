@@ -112,7 +112,7 @@ module.exports.addTeamMember = function (req, res) {
         })
         .exec(function (err, content) {
 
-            if (content.length > 0 || typeof content[0].members[0].email === 'string') {
+            if (content.length > 0 ) {
                 responseUtilities.sendJsonResponse(res, err, {
                     "message": "Member could not be added. E-mail provided is in use."
                 }, 409);
