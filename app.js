@@ -27,7 +27,7 @@ var app = express();
 
 // let the app to get access to static folders
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('uploads'));
+app.use('./resources/images_uploads/', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -37,8 +37,8 @@ var FirebaseConnection = require('./app_api/lib/agency/db/firebase/FirebaseConne
 const objFirebaseConnection = new FirebaseConnection(firebase);
 
 // routes
-var indexRouter = require('./app_server/routes/server_routers');
-var routesApi  = require('./app_api/routes/api_routers');
+var server_routers = require('./app_server/routes/server_routers');
+var api_routers  = require('./app_api/routes/api_routers');
 
 // catching and disabling favicon error
 app.get('/favicon.ico', (req, res) => res.status(204));
@@ -54,8 +54,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // using routes
-app.use('/', indexRouter);
-app.use('/api', routesApi);
+app.use('/', server_routers);
+app.use('/api', api_routers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

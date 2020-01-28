@@ -4,8 +4,11 @@ var teamController = require('../controllers/teamController');
 var serviceController = require('../controllers/serviceController');
 var portfolioController = require('../controllers/portfolioController');
 
+//for uploading 
+var upload = require('../lib/agency/upload/multerSettings');
+
 // routes for saving images
-router.post('/team/members/image/', teamController.addImage);
+router.post('/team/members/image/', upload.any(), teamController.addImage);
 
 // routes for firebase portfolio
 router.get('/portfolio/', portfolioController.portfolioListing);
