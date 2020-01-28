@@ -7,9 +7,6 @@ var portfolioController = require('../controllers/portfolioController');
 //for uploading 
 var upload = require('../lib/agency/upload/multerSettings');
 
-// routes for saving images
-router.post('/team/members/image/', upload.any(), teamController.addImage);
-
 // routes for firebase portfolio
 router.get('/portfolio/', portfolioController.portfolioListing);
 
@@ -25,6 +22,10 @@ router.post('/team/members/', teamController.addTeamMember);
 router.get('/team/members/', teamController.members);
 router.delete('/team/members/', teamController.removeMember);
 router.get('/team/members/:email', teamController.getTeamMember);
+
+// routes for member images model 
+router.post('/team/image/', upload.any(), teamController.addImage);
+router.get('/team/image/', teamController.getTeamMemberImages);
 
 // routes for team model
 router.get('/team/', teamController.teamInfo);
