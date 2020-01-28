@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 // api configuration
-var ApiConfiguration = require('./app_api/lib/agency/ApiConfiguration');
+var ApiConfiguration = require('./app_api/lib/agency/settings/ApiConfiguration');
 
 // mongo
 var mongoose = require('mongoose');
@@ -15,11 +15,23 @@ const objConnection = new MongoConnection(mongoose);
 objConnection.start();
 objConnection.registerSchemas();
 
+//cloudinary
+var cloudinarySettings = require('./app_api/lib/agency/upload/CloudinarySettings');
+
+// for uploading
+var bodyParser = require('body-parser');
+var path = require('path');
+
 // express app
 var app = express();
 
+// let the app to get access to static folders
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static('uploads'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 // firebase
-//const functions = require("firebase-functions");
 const firebase = require('firebase');
 var FirebaseConnection = require('./app_api/lib/agency/db/firebase/FirebaseConnection');
 const objFirebaseConnection = new FirebaseConnection(firebase);
