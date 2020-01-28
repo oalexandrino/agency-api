@@ -25,8 +25,6 @@ module.exports.getTeamMemberImages = function (req, res) {
     });
 };
 
-
-
 module.exports.title = function (req, res) {
     TeamModel.find().select("title").exec(function (err, content) {
         responseUtilities.sendJsonResponse(res, err, content);
