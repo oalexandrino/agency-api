@@ -1,5 +1,5 @@
 //var homePageDataObject = require('../../app_api/models/data/homePageDataObject');
-var ApiConfiguration = require('../../app_api/lib/agency/ApiConfiguration');
+var ApiConfiguration = require('../../app_api/lib/agency/settings/ApiConfiguration');
 var request = require('request');
 var Promise = require("bluebird");
 var request = require('request-promise');
