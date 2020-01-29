@@ -10,16 +10,16 @@ section#team.bg-light.page-section
 				each member in homePageData[0].team[0].members
 					.col-sm-4
 						.team-member
-							img.mx-auto.rounded-circle(src=homePageData[3].teamMemberImages[member.email], alt='')
+							img.mx-auto.rounded-circle(src=homePageData[3].teamMemberImages[member.email], alt='#{ member.name }')
 							h4= member.name
 							p.text-muted= member.role
 							ul.list-inline.social-buttons
 								li.list-inline-item
-									a(href='#')
+									a(href='#{ member.twitter }' target='blank' title='Twitter of #{ member.name }')
 										i.fab.fa-twitter
 								li.list-inline-item
-									a(href='#')
+									a(href='#{ member.facebook }' target='blank' title='Facebook of #{ member.name }')
 										i.fab.fa-facebook-f
 								li.list-inline-item
-									a(href='#')
+									a(href='#{ member.linkedin }' target='blank' title='Linkedin of #{ member.name }')
 										i.fab.fa-linkedin-in
