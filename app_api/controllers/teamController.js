@@ -204,67 +204,82 @@ module.exports.addImage = function (req, res) {
     
     try {
         
-        var imageDetails = {
-            imageName: req.body.imageName,
-        }
-
-        
-        if (!req.files) {
-            responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide data.' });
-            return;
-        }
-        
-        // check if image-name exist 
-        TeamImageModel.find({
-            imageName: imageDetails.imageName
-        }, (err, callback) => {
-                
-            //checking if error occurred
-            if (err) {
-
-                responseUtilities.sendJsonResponse(res, false, { "message": 'There was a problem uploading image.' });
-
-            } else if (callback.length >= 1) {
-
-                responseUtilities.sendJsonResponse(res, false, { "message": 'File already exist.'});
-                
-            } else {
-
-                var imageDetails = {
-                    imageName: req.body.imageName,
-                    cloudImage: req.files[0].path,
-                    imageId: ''
+        TeamModel
+            .find({
+                "members.email": req.body.email
+            }, {
+                'members.$': 1
+            })
+            .exec(function (err, content) {
+ 
+                if (content.length === 0 ) {
+                    responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. No user found with the provided email.' });
+                    return;
                 }
-
-                // if all things went well, to post the image to cloudinary
-                CloudinarySettings.uploads(imageDetails.cloudImage).then((result) => {
+                else {
                     
                     var imageDetails = {
-                        email: req.body.email,
                         imageName: req.body.imageName,
-                        cloudImage: result.url,
-                        imageId: result.id
                     }
-                    
-                    // then create the image file in the database
-                    TeamImageModel.create(imageDetails, (err, created) => {
-                        
-                        var message = "Team member image uploaded successfully!!"
-                        
-                        if (err) {
-         
-                            message = "It could not upload image, try again. Error description: " + err;
 
+                    if (!req.files) {
+                        responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide data.' });
+                        return;
+                    }
+
+                    // check if image-name exist
+                    TeamImageModel.find({
+                        imageName: imageDetails.imageName
+                    }, (err, callback) => {
+
+                        //checking if error occurred
+                        if (err) {
+
+                            responseUtilities.sendJsonResponse(res, false, { "message": 'There was a problem uploading image.' });
+
+                        } else if (callback.length >= 1) {
+
+                            responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. File already exist.' });
+
+                        } else {
+
+                            var imageDetails = {
+                                imageName: req.body.imageName,
+                                cloudImage: req.files[0].path,
+                                imageId: ''
+                            }
+
+                            // if all things went well, to post the image to cloudinary
+                            CloudinarySettings.uploads(imageDetails.cloudImage).then((result) => {
+
+                                var imageDetails = {
+                                    email: req.body.email,
+                                    imageName: req.body.imageName,
+                                    cloudImage: result.url,
+                                    imageId: result.id
+                                }
+
+                                // then create the image file in the database
+                                TeamImageModel.create(imageDetails, (err, created) => {
+
+                                    var message = "Team member image uploaded successfully!!"
+
+                                    if (err) {
+
+                                        message = "It could not upload image, try again. Error description: " + err;
+
+                                    }
+
+                                    responseUtilities.sendJsonResponse(res, false, {
+                                        "message": message
+                                    });
+
+                                });
+                            });
                         }
-                        
-                        responseUtilities.sendJsonResponse(res, false, {
-                            "message": message
-                        });
-                        
                     });
-                });
-            }
-        });
+                }
+            });
     } catch (execptions) {
         console.log(execptions);
         responseUtilities.sendJsonResponse(res, false, { "message": execptions });
