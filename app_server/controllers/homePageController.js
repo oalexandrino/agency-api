@@ -28,7 +28,11 @@ var homePageInfo = function (req, res) {
         {
             url: url + '/api/team/description',
             headers: { 'headers': 'apitoken' }
-        }        
+        },
+        {
+            url: url + '/api/about/',
+            headers: { 'headers': 'apitoken' }
+        }
     ];
    
     Promise.map(requests, function (obj) {

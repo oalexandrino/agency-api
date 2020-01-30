@@ -3,8 +3,12 @@ var router = express.Router();
 var teamController = require('../controllers/teamController');
 var serviceController = require('../controllers/serviceController');
 var portfolioController = require('../controllers/portfolioController');
+var aboutController = require('../controllers/aboutController');
 
-//for uploading 
+// routes for about model
+router.get('/about/', aboutController.aboutListing);
+
+//for uploading
 var upload = require('../lib/agency/upload/multerSettings');
 
 // routes for firebase portfolio
