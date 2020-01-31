@@ -5,7 +5,7 @@ var aboutModelSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    title: {
+    headline: {
         type: String,
         required: true,
         min: 3,

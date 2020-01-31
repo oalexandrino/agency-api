@@ -13,7 +13,7 @@ module.exports.delete = function (req, res) {
             if (!result) {
                 message = "Error at deleting service.";
             }
-            
+
             responseUtilities.sendJsonResponse(res, err, {"message": message});
 
         });
@@ -43,7 +43,7 @@ module.exports.update = function (req, res) {
 };
 
 module.exports.getService = function (req, res) {
-    
+
     var valid = mongoose.Types.ObjectId.isValid(req.params.idService);
     if (valid) {
         var query = { "_id": req.params.idService };
@@ -57,8 +57,6 @@ module.exports.getService = function (req, res) {
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "Service id is not valid." });
     }
-    
-
 };
 
 module.exports.serviceListing = function (req, res) {

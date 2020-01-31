@@ -6,7 +6,11 @@ var portfolioController = require('../controllers/portfolioController');
 var aboutController = require('../controllers/aboutController');
 
 // routes for about model
+router.post('/about/', aboutController.save);
 router.get('/about/', aboutController.aboutListing);
+router.get('/about/:idAboutItem', aboutController.getAboutItem);
+router.delete('/about/', aboutController.delete);
+router.put('/about/', aboutController.update);
 
 //for uploading
 var upload = require('../lib/agency/upload/multerSettings');
@@ -27,7 +31,7 @@ router.get('/team/members/', teamController.members);
 router.delete('/team/members/', teamController.removeMember);
 router.get('/team/members/:email', teamController.getTeamMember);
 
-// routes for member images model 
+// routes for member images model
 router.post('/team/image/', upload.any(), teamController.addImage);
 router.get('/team/image/', teamController.getTeamMemberImages);
 
