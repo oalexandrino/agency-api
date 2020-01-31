@@ -47,3 +47,4 @@ Thumbs.db
 
 # env file
 # e.env
+app_api/lib/agency/db/firebase/serviceAccountKey.json 
