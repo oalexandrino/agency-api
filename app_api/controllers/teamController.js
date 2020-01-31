@@ -14,7 +14,7 @@ module.exports.getTeamMemberImages = function (req, res) {
     TeamImageModel.find().exec(function (err, content) {
 
         var users = {};
-        
+
         for (let index = 0; index < content.length; index++) {
             const user = content[index];
             users[user.email] = user.cloudImage;
@@ -201,9 +201,9 @@ module.exports.teamInfoUpdate = function (req, res) {
 }
 
 module.exports.addImage = function (req, res) {
-    
+
     try {
-        
+
         TeamModel
             .find({
                 "members.email": req.body.email
@@ -211,13 +211,13 @@ module.exports.addImage = function (req, res) {
                 'members.$': 1
             })
             .exec(function (err, content) {
- 
+
                 if (content.length === 0 ) {
                     responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. No user found with the provided email.' });
                     return;
                 }
                 else {
-                    
+
                     var imageDetails = {
                         imageName: req.body.imageName,
                     }

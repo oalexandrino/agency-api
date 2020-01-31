@@ -21,7 +21,7 @@ section#about.page-section
 							- if (index % 2) {
 							li.timeline-inverted
 								.timeline-image
-									img.rounded-circle.img-fluid(src='/images/agency/about/1.jpg', alt='')
+									img.rounded-circle.img-fluid(src=homePageData[6].aboutImages[about._id], alt='#{ about.aboutId }')
 								.timeline-panel
 									.timeline-heading
 										h4 #{prettyDate(about.date)}
@@ -32,7 +32,7 @@ section#about.page-section
 							- } else {
 							li
 								.timeline-image
-									img.rounded-circle.img-fluid(src='/images/agency/about/1.jpg', alt='')
+									img.rounded-circle.img-fluid(src=homePageData[6].aboutImages[about._id], alt='#{ about.aboutId }')
 								.timeline-panel
 									.timeline-heading
 										h4 #{prettyDate(about.date)}

@@ -32,9 +32,13 @@ var homePageInfo = function (req, res) {
         {
             url: url + '/api/about/',
             headers: { 'headers': 'apitoken' }
+        },
+        {
+            url: url + '/api/about/images/',
+            headers: { 'headers': 'apitoken' }
         }
     ];
-   
+
     Promise.map(requests, function (obj) {
         return request(obj).then(function (body) {
             return JSON.parse(body);
@@ -43,16 +47,16 @@ var homePageInfo = function (req, res) {
 
         var output = [];
         for (var i = 0; i < results.length; i++) {
-            
+
             output.push(results[i]);
 
         }
-        
+
         var homePageData = { "homePageData": output };
-        
+
         // console.log("output: ");
         // console.log(homePageData);
-        
+
         res.render('index', homePageData);
 
     }, function (err) {

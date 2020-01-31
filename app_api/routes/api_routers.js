@@ -5,15 +5,19 @@ var serviceController = require('../controllers/serviceController');
 var portfolioController = require('../controllers/portfolioController');
 var aboutController = require('../controllers/aboutController');
 
+//for uploading
+var upload = require('../lib/agency/upload/multerSettings');
+
+// routes for about images model
+router.post('/about/image/', upload.any(), aboutController.addImage);
+router.get('/about/images/', aboutController.getAboutImages);
+
 // routes for about model
 router.post('/about/', aboutController.save);
 router.get('/about/', aboutController.aboutListing);
 router.get('/about/:idAboutItem', aboutController.getAboutItem);
 router.delete('/about/', aboutController.delete);
 router.put('/about/', aboutController.update);
-
-//for uploading
-var upload = require('../lib/agency/upload/multerSettings');
 
 // routes for firebase portfolio
 router.get('/portfolio/', portfolioController.portfolioListing);

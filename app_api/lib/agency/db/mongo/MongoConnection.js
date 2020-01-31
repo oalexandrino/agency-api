@@ -106,7 +106,7 @@ class MongoConnection {
                 process.exit(0);
             });
         });
-        
+
     }
 
     registerSchemas() {
@@ -115,6 +115,7 @@ class MongoConnection {
             require('../../../../models/teamMemberImageModel');
             require('./../../../../models/ServiceModel');
             require('./../../../../models/AboutModel');
+            require('./../../../../models/aboutImageModel');
         } catch (error) {
             console.log('Error at registering Schemas: ' + error);
         }
