@@ -1,25 +1,46 @@
+- function prettyDate(dateString){
+	- var date = new Date(dateString);
+	- var d = date.getDate();
+	- var monthNames = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+	- var m = monthNames[date.getMonth()];
+	- var y = date.getFullYear();
+	- return d+' '+m+' '+y;
+- }
 // About
 section#about.page-section
 	.container
 		.row
 			.col-lg-12.text-center
 				h2.section-heading.text-uppercase About
-				h3.section-subheading.text-muted Lorem ipsum dolor sit amet consectetur.
+				h3.section-subheading.text-muted
 		.row
 			.col-lg-12
 				ul.timeline
 					if homePageData[5].abouts
-						each about in homePageData[5].abouts
+						each about, index in homePageData[5].abouts
+							- if (index % 2) {
+							li.timeline-inverted
+								.timeline-image
+									img.rounded-circle.img-fluid(src='/images/agency/about/1.jpg', alt='')
+								.timeline-panel
+									.timeline-heading
+										h4 #{prettyDate(about.date)}
+										h4.subheading= about.headline
+									.timeline-body
+										p.text-muted
+											= about.description
+							- } else {
 							li
 								.timeline-image
 									img.rounded-circle.img-fluid(src='/images/agency/about/1.jpg', alt='')
 								.timeline-panel
 									.timeline-heading
-										h4= about.date
+										h4 #{prettyDate(about.date)}
 										h4.subheading= about.headline
 									.timeline-body
 										p.text-muted
 											= about.description
+							- }
 					li.timeline-inverted
 						.timeline-image
 							h4
