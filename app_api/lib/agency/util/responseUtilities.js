@@ -22,7 +22,7 @@ var responseUtilities =  {
         res.status(httpStatus);
         res.json(content);
         
-    } 
+    }
     
     
 

@@ -4,7 +4,6 @@ var request = require('request');
 var Promise = require("bluebird");
 var request = require('request-promise');
 
-
 var homePageInfo = function (req, res) {
 
     // create request objects
@@ -63,28 +62,6 @@ var homePageInfo = function (req, res) {
         if (err)
             console.log(err);
     });
-
-
-    /*
-
-    var requestOptions, path;
-    path = '/api/service/';
-
-    requestOptions = {
-        url: ApiConfiguration.getApiURL() + path,
-        method: "GET",
-        json: {}
-    };
-
-    request(requestOptions, function (err, response, body) {
-
-        var data = { "portfolioData": homePageDataObject, "serviceData": body };
-        res.render('index', data);
-    });*/
-
-
 };
-
-
 
 module.exports.index = homePageInfo;
