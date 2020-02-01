@@ -64,13 +64,37 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  console.error(err.stack);
-  // render the error page
+  
+  // respond with html page
+  
+  if (req.accepts('html')) {
+    //res.render('route not found', { url: req.url });
+    res.status(404);
+    res.redirect('/pageNotFound');
+    return;
+  }
+ 
+  // respond with json
+  if (req.accepts('json')) {
+    res.status(err.status || 404);
+    res.send({
+      message: 'Error type: ' + err.message,
+    });
+    return;
+  }
+
+  // default to plain-text. send()
+  res.type('txt').send('Not found');  
+  
+  /*
   res.status(err.status || 500).send('Error 500: Something broke!');
-  res.render('error');
+  res.status(err.status || 500);
+  res.json({ 'message' : 'Error 500: Something broke!'});
+  res.render('error');*/
+  
 });
 
 module.exports = app, objFirebaseConnection;
