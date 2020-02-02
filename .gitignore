@@ -46,5 +46,6 @@ testem.log
 Thumbs.db
 
 # env file
-#.env
-app_api/lib/agency/db/firebase/serviceAccountKey.json 
+# .env
+# /.env
+app_api/lib/agency/db/firebase/serviceAccountKey.json
