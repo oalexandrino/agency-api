@@ -69,6 +69,9 @@ var sendEmail = function (req, res) {
     
     const message = req.body.message;
     const email = req.body.email;
+    const phone = req.body.phone;
+    
+    var bodyEmail = "Message: " + message + "<br/>E-mail: " + email + "<br/>Phone: " + phone;
     
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
@@ -85,7 +88,7 @@ var sendEmail = function (req, res) {
         from: process.env.EMAIL_FROM_EMAIL,
         to: process.env.EMAIL_FROM_TO,
         subject: process.env.EMAIL_SUBJECT_WEBSITE,
-        html: message
+        html: bodyEmail
     };
     
     const mailOptionsToSender = {
@@ -109,7 +112,7 @@ var sendEmail = function (req, res) {
         } else {
             console.log('Email to sender sent: ' + info.response);
         }
-    });    
+    });
     
     res.end();
 }
