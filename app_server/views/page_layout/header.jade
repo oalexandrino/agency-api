@@ -3,6 +3,6 @@
 header.masthead
 	.container
 		.intro-text
-			.intro-lead-in Welcome To Our Studio!
-			.intro-heading.text-uppercase It's Nice To Meet You
-			a.btn.btn-primary.btn-xl.text-uppercase.js-scroll-trigger(href='#services') Tell Me More
+			.intro-lead-in= homePageData[7].config[0].site_title
+			.intro-heading.text-uppercase= homePageData[7].config[0].site_headline
+			a.btn.btn-primary.btn-xl.text-uppercase.js-scroll-trigger(href='#services')= homePageData[7].config[0].link_site

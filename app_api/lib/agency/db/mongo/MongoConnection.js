@@ -116,6 +116,7 @@ class MongoConnection {
             require('./../../../../models/ServiceModel');
             require('./../../../../models/AboutModel');
             require('./../../../../models/aboutImageModel');
+            require('./../../../../models/agencyWebsiteConfigurationModel');
         } catch (error) {
             console.log('Error at registering Schemas: ' + error);
         }

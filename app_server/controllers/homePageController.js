@@ -36,6 +36,10 @@ var homePageInfo = function (req, res) {
         {
             url: url + '/api/about/images/',
             headers: { 'headers': 'apitoken' }
+        },
+        {
+            url: url + '/api/config/',
+            headers: { 'headers': 'apitoken' }
         }
     ];
 
@@ -66,13 +70,13 @@ var homePageInfo = function (req, res) {
 };
 
 var sendEmail = function (req, res) {
-    
+
     const message = req.body.message;
     const email = req.body.email;
     const phone = req.body.phone;
-    
+
     var bodyEmail = "Message: " + message + "<br/>E-mail: " + email + "<br/>Phone: " + phone;
-    
+
     const transporter = nodemailer.createTransport({
         host: process.env.EMAIL_HOST,
         port: process.env.EMAIL_SMTP_PORT,
@@ -83,21 +87,21 @@ var sendEmail = function (req, res) {
         },
         tls: { rejectUnauthorized: process.env.EMAIL_TLS }
     });
-    
+
     const mailOptionsToWebSite = {
         from: process.env.EMAIL_FROM_EMAIL,
         to: process.env.EMAIL_FROM_TO,
         subject: process.env.EMAIL_SUBJECT_WEBSITE,
         html: bodyEmail
     };
-    
+
     const mailOptionsToSender = {
         from: process.env.EMAIL_FROM_EMAIL,
         to: email,
         subject: process.env.EMAIL_SUBJECT_SENDER,
         html: process.env.EMAIL_MESSAGE
     };
-    
+
     transporter.sendMail(mailOptionsToWebSite, function (error, info) {
         if (error) {
             console.log(error);
@@ -105,7 +109,7 @@ var sendEmail = function (req, res) {
             console.log('Email to website sent: ' + info.response);
         }
     });
-    
+
     transporter.sendMail(mailOptionsToSender, function (error, info) {
         if (error) {
             console.log(error);
@@ -113,7 +117,7 @@ var sendEmail = function (req, res) {
             console.log('Email to sender sent: ' + info.response);
         }
     });
-    
+
     res.end();
 }
 

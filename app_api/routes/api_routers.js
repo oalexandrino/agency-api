@@ -4,6 +4,11 @@ var teamController = require('../controllers/teamController');
 var serviceController = require('../controllers/serviceController');
 var portfolioController = require('../controllers/portfolioController');
 var aboutController = require('../controllers/aboutController');
+var agencyWebSiteConfigurationController = require('../controllers/agencyWebSiteConfigurationController');
+
+// routes for website general configuration
+router.get('/config/', agencyWebSiteConfigurationController.configListing);
+router.put('/config/', agencyWebSiteConfigurationController.update);
 
 //for uploading
 var upload = require('../lib/agency/upload/multerSettings');
