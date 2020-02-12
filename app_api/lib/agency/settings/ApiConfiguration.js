@@ -20,7 +20,7 @@ class ApiConfiguration {
         } else {
             url = apiOptions.dev;
         }
-
+        console.log(url);
         return url;
 
     }
