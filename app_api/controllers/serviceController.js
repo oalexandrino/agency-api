@@ -3,20 +3,22 @@ var ServiceModel = mongoose.model('service');
 var responseUtilities = require("../lib/agency/util/responseUtilities");
 
 module.exports.delete = function (req, res) {
-
+    
     var id = req.body.id;
-
-    ServiceModel
-        .findByIdAndDelete({"_id": id})
-        .exec(function (err, result) {
-            var message = "Service has been removed successful.";
-            if (!result) {
-                message = "Error at deleting service.";
-            }
-
-            responseUtilities.sendJsonResponse(res, err, {"message": message});
-
-        });
+    var valid = mongoose.Types.ObjectId.isValid(id);
+    if (valid) {
+        ServiceModel
+            .findByIdAndDelete({ "_id": id })
+            .exec(function (err, result) {
+                var message = "Service has been removed successful.";
+                if (!result) {
+                    message = "Error at deleting service.";
+                }
+                responseUtilities.sendJsonResponse(res, err, { "message": message });
+            });
+    } else {
+        responseUtilities.sendJsonResponse(res, false, { "message": "Service id is not valid." });
+    }
 };
 
 module.exports.update = function (req, res) {
