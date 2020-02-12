@@ -47,7 +47,7 @@ app.use(cors({
 // let the app to get access to static folders
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('./resources/images_uploads/', express.static('uploads'));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // firebase
@@ -88,13 +88,13 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   
   // respond with html page
-  
+  /*
   if (req.accepts('html')) {
     //res.render('route not found', { url: req.url });
     res.status(404);
     res.redirect('/pageNotFound');
     return;
-  }
+  }*/
  
   // respond with json
   if (req.accepts('json')) {

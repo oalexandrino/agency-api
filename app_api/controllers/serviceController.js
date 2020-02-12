@@ -4,7 +4,7 @@ var responseUtilities = require("../lib/agency/util/responseUtilities");
 
 module.exports.delete = function (req, res) {
     
-    var id = req.body.id;
+    var id = req.params.idService;
     var valid = mongoose.Types.ObjectId.isValid(id);
     if (valid) {
         ServiceModel
@@ -17,7 +17,8 @@ module.exports.delete = function (req, res) {
                 responseUtilities.sendJsonResponse(res, err, { "message": message });
             });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": "Service id is not valid." });
+        const message = "Error at deleting service. Service id is not valid.";
+        responseUtilities.sendJsonResponse(res, false, { "message": message });
     }
 };
 
@@ -57,7 +58,7 @@ module.exports.getService = function (req, res) {
             responseUtilities.sendJsonResponse(res, err, result);
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": "Service id is not valid." });
+        responseUtilities.sendJsonResponse(res, false, { "message": "Error at getting service. Service id is not valid." });
     }
 };
 

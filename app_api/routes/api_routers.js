@@ -31,7 +31,7 @@ router.get('/portfolio/', portfolioController.portfolioListing);
 router.post('/service/', serviceController.save);
 router.get('/service/', serviceController.serviceListing);
 router.get('/service/:idService', serviceController.getService);
-router.delete('/service/', serviceController.delete);
+router.delete('/service/:idService', serviceController.delete);
 router.put('/service/', serviceController.update);
 
 // routes for member model
