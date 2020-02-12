@@ -58,9 +58,6 @@ var homePageInfo = function (req, res) {
 
         var homePageData = { "homePageData": output , "title" : "Agency website by Olavo Alexandrino" };
 
-        // console.log("output: ");
-        // console.log(homePageData);
-
         res.render('index', homePageData);
 
     }, function (err) {
