@@ -99,7 +99,7 @@ app.use(function(err, req, res, next) {
   if (req.accepts('json')) {
     res.status(err.status || 404);
     res.send({
-      message: 'Error type: ' + err.message,
+      message: 'Error type in the application: ' + err.message,
     });
     return;
   }
