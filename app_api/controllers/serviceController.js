@@ -3,7 +3,7 @@ var ServiceModel = mongoose.model('service');
 var responseUtilities = require("../lib/agency/util/responseUtilities");
 
 module.exports.delete = function (req, res) {
-    
+
     var id = req.params.idService;
     var valid = mongoose.Types.ObjectId.isValid(id);
     if (valid) {
@@ -29,7 +29,8 @@ module.exports.update = function (req, res) {
     var update = {
         "$set": {
             "description": req.body.description,
-            "title": req.body.title
+            "title": req.body.title,
+            "fontawesomeIcon": req.body.fontawesomeIcon
         }
     };
 

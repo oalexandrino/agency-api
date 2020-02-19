@@ -32,7 +32,7 @@ var allowedOrigins = ['http://localhost:3000',
 //Enabling CORS
 app.use(cors({
   origin: function(origin, callback){
-    // allow requests with no origin 
+    // allow requests with no origin
     // (like mobile apps or curl requests)
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){
@@ -86,15 +86,17 @@ app.use(function(err, req, res, next) {
 
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
+
   // respond with html page
+  /*
   if (req.accepts('html')) {
     //res.render('route not found', { url: req.url });
     res.status(404);
     res.redirect('/pageNotFound');
     return;
   }
- 
+  */
+
   // respond with json
   if (req.accepts('json')) {
     res.status(err.status || 404);
@@ -105,14 +107,14 @@ app.use(function(err, req, res, next) {
   }
 
   // default to plain-text. send()
-  res.type('txt').send('Not found');  
-  
+  res.type('txt').send('Not found');
+
   /*
   res.status(err.status || 500).send('Error 500: Something broke!');
   res.status(err.status || 500);
   res.json({ 'message' : 'Error 500: Something broke!'});
   res.render('error');*/
-  
+
 });
 
 module.exports = app, objFirebaseConnection;
