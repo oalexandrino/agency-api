@@ -101,6 +101,8 @@ module.exports.addImage = function (req, res) {
 
     try {
 
+        console.log(req.headers);
+        console.log(req.body.aboutId);
         var aboutId = req.body.aboutId;
         var valid = mongoose.Types.ObjectId.isValid(aboutId);
 
@@ -122,7 +124,7 @@ module.exports.addImage = function (req, res) {
                     }
 
                     if (!req.files) {
-                        responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide data.' });
+                        responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide a file.' });
                         return;
                     }
 
