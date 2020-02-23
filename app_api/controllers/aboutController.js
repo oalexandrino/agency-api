@@ -190,6 +190,24 @@ module.exports.addImage = function (req, res) {
     }
 }
 
+module.exports.getImage = function (req, res) {
+
+  var valid = mongoose.Types.ObjectId.isValid(req.params.idAboutItem);
+  if (valid) {
+      var query = { "aboutId": req.params.idAboutItem };
+      AboutImageModel.findOne(query).exec(function (err, result) {
+          var data = { "message": "About image item not found." };
+          if (!result) {
+              result = data;
+          }
+          responseUtilities.sendJsonResponse(res, err, result);
+      });
+  } else {
+      responseUtilities.sendJsonResponse(res, false, { "message": "Error retrieving an image item. About image item id is not valid." });
+  }
+
+}
+
 module.exports.getAboutImages = function (req, res) {
     AboutImageModel.find().exec(function (err, content) {
 

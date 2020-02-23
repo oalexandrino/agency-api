@@ -15,6 +15,7 @@ var upload = require('../lib/agency/upload/multerSettings');
 
 // routes for about images model
 router.post('/about/image/', upload.any(), aboutController.addImage);
+router.get('/about/image/:idAboutItem', aboutController.getImage);
 router.get('/about/images/', aboutController.getAboutImages);
 
 // routes for about model
