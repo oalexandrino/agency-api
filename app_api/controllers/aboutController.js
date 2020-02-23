@@ -102,7 +102,7 @@ module.exports.addImage = function (req, res) {
     try {
 
         console.log(req.headers);
-        console.log(req.body.aboutId);
+
         var aboutId = req.body.aboutId;
         var valid = mongoose.Types.ObjectId.isValid(aboutId);
 
@@ -168,12 +168,16 @@ module.exports.addImage = function (req, res) {
                                     if (err) {
 
                                         message = "It could not upload image, try again. Error description: " + err;
+                                        responseUtilities.sendJsonResponse(res, false, {
+                                            "message": message
+                                        });
 
                                     }
-
-                                    responseUtilities.sendJsonResponse(res, false, {
-                                        "message": message
-                                    });
+                                    else {
+                                      responseUtilities.sendJsonResponse(res, false, {
+                                          "message": message , "aboutId" : aboutId, "cloudImage" : result.url
+                                      });
+                                    }
 
                                 });
                             });
