@@ -45,20 +45,27 @@ module.exports.getAboutItem = function (req, res) {
 
 module.exports.delete = function (req, res) {
 
-    var id = req.body.id;
-    var valid = mongoose.Types.ObjectId.isValid(id);
+    var idAbout = req.params.idAbout;
+    var valid = mongoose.Types.ObjectId.isValid(idAbout);
 
     if (valid) {
         AboutModel
-        .findByIdAndDelete({"_id": id})
+        .findByIdAndDelete({"_id": idAbout})
         .exec(function (err, result) {
             var message = "About item has been removed successful.";
             if (!result) {
                 message = "Error at deleting an about item.";
+            } else {
+                // finding and deleting related about image item
+                var query = { "aboutId": idAbout };
+                AboutImageModel.findOneAndDelete(query).exec(function (err, result) {
+                    message = " About image item has been removed successful.";
+                    if (!result) {
+                        message = " Error trying to remove about image item.";
+                    }
+                });
             }
-
             responseUtilities.sendJsonResponse(res, err, {"message": message});
-
         });
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });

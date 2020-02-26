@@ -22,7 +22,7 @@ router.get('/about/images/', aboutController.getAboutImages);
 router.post('/about/', aboutController.save);
 router.get('/about/', aboutController.aboutListing);
 router.get('/about/:idAboutItem', aboutController.getAboutItem);
-router.delete('/about/', aboutController.delete);
+router.delete('/about/:idAbout', aboutController.delete);
 router.put('/about/', aboutController.update);
 
 // routes for firebase portfolio
