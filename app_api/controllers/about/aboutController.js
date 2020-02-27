@@ -1,10 +1,33 @@
+/*
+MIT License
+
+Copyright (c) 2020 Olavo Alexandrino, http://www.oalexandrino.com.br
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 var mongoose = require('mongoose');
 var AboutModel = mongoose.model('about');
 var AboutImageModel = mongoose.model('aboutImage');
 var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 var responseUtilities = require("../../lib/agency/util/responseUtilities");
 var aboutFunctions = require("../about/aboutFunctions");
-var aboutMessages = require("../about/aboutMessages");
+var aboutMsg = require("./aboutMsg");
 
 module.exports.aboutListing = function (req, res) {
     AboutModel.find().sort({date: 'ascending'}).exec(function (err, content) {
@@ -19,9 +42,9 @@ module.exports.save = function (req, res) {
         headline: req.body.headline,
         description: req.body.description
     }, function (err, result) {
-            var message = "About item has been created successful.";
+            var message = aboutMsg.aboutItemCreatedSuccess;
             if (!result) {
-                message = "Error at creating an about item.";
+                message = aboutMsg.aboutItemCreatedError;
             }
             responseUtilities.sendJsonResponse(res, err, { "message": message });
     });
@@ -33,14 +56,14 @@ module.exports.getAboutItem = function (req, res) {
     if (valid) {
         var query = { "_id": req.params.idAboutItem };
         AboutModel.findById(query).exec(function (err, result) {
-            var data = { "message": "About item not found." };
+            var data = { "message": aboutMsg.aboutItemNotFound };
             if (!result) {
                 result = data;
             }
             responseUtilities.sendJsonResponse(res, err, result);
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": "Error retrieving an item. About item id is not valid." });
+        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
     }
 };
 
@@ -61,15 +84,15 @@ module.exports.update = function (req, res) {
         };
 
         AboutModel.findByIdAndUpdate(query, update, options, function (err, result) {
-            var message = "About item has been updated successful.";
+            var message = aboutMsg.aboutItemUpdatedSuccess;
             if (!result) {
-                message = "Error at updating an about item.";
+                message = aboutMsg.aboutItemUpdatedError;
             }
 
             responseUtilities.sendJsonResponse(res, err, { "message": message });
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });
+        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
     }
 
 };
@@ -77,12 +100,9 @@ module.exports.update = function (req, res) {
 module.exports.addImage = function (req, res) {
 
     try {
-
         console.log(req.headers);
-
         var aboutId = req.body.aboutId;
         var valid = mongoose.Types.ObjectId.isValid(aboutId);
-
         if (valid) {
             AboutModel
             .findById({
@@ -91,7 +111,7 @@ module.exports.addImage = function (req, res) {
             .exec(function (err, content) {
 
                 if (content.length === 0 ) {
-                    responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. No item found with the provided id.' });
+                    responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutItemNotFound });
                     return;
                 }
                 else {
@@ -101,7 +121,7 @@ module.exports.addImage = function (req, res) {
                     }
 
                     if (!req.files) {
-                        responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide a file.' });
+                        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemNoFileProvidedError });
                         return;
                     }
 
@@ -112,13 +132,9 @@ module.exports.addImage = function (req, res) {
 
                         //checking if error occurred
                         if (err) {
-
-                            responseUtilities.sendJsonResponse(res, false, { "message": 'There was a problem uploading image.' });
-
+                            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemUploadError });
                         } else if (callback.length >= 1) {
-
-                            responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. File already exist.' });
-
+                            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemFileAlreadyExistError });
                         } else {
 
                             var imageDetails = {
@@ -140,22 +156,18 @@ module.exports.addImage = function (req, res) {
                                 // then create the image file in the database
                                 AboutImageModel.create(imageDetails, (err, created) => {
 
-                                    var message = "Image uploaded successfully for the provided about item!!"
-
+                                    var message = aboutMsg.aboutImageItemUploadSuccess;
                                     if (err) {
-
-                                        message = "It could not upload image, try again. Error description: " + err;
+                                        message = `${aboutMsg.aboutImageItemUploadError} ${aboutMsg.aboutErrorDescription}  ${err}`;
                                         responseUtilities.sendJsonResponse(res, false, {
                                             "message": message
                                         });
-
                                     }
                                     else {
                                       responseUtilities.sendJsonResponse(res, false, {
                                           "message": message , "aboutId" : aboutId, "cloudImage" : result.url
                                       });
                                     }
-
                                 });
                             });
                         }
@@ -163,13 +175,11 @@ module.exports.addImage = function (req, res) {
                 }
             });
         } else {
-            responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });
+            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
         }
-
-
-    } catch (execptions) {
-        console.log(execptions);
-        responseUtilities.sendJsonResponse(res, false, { "message": execptions });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJsonResponse(res, false, { "message": err.message });
     }
 }
 
@@ -179,14 +189,14 @@ module.exports.getImage = function (req, res) {
   if (valid) {
       var query = { "aboutId": req.params.idAboutItem };
       AboutImageModel.findOne(query).exec(function (err, result) {
-          var data = { "message": "About image item not found." };
+          var data = { "message": aboutMsg.aboutImageItemNotFound };
           if (!result) {
               result = data;
           }
           responseUtilities.sendJsonResponse(res, err, result);
       });
   } else {
-      responseUtilities.sendJsonResponse(res, false, { "message": "Error retrieving an image item. About image item id is not valid." });
+      responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
   }
 
 }
@@ -211,7 +221,7 @@ module.exports.delete = function (req, res) {
     const idAbout = req.params.idAbout;
 
     if (!mongoose.Types.ObjectId.isValid(idAbout)) {
-        responseUtilities.sendJsonResponse(res, false, { "message": aboutMessages.msgIdError });
+        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
     }
     else {
 
@@ -221,17 +231,17 @@ module.exports.delete = function (req, res) {
             aboutFunctions.deleteAboutWithId(idAbout)
             .then(() => {
                 // deleteAboutWithId worked
-                message += aboutMessages.msgItemSuccess;
+                message += aboutMsg.aboutItemRemoveSuccess;
                 console.log(message);
                 return aboutFunctions.deleteImageWithAboutId(idAbout); })
             .then(() => {
                 // deleteImageWithAboutId worked
-                message += aboutMessages.msgImageSuccess;
+                message += aboutMsg.aboutImageItemRemoveSuccess;
                 console.log(message);
                 responseUtilities.sendJsonResponse(res, false, { "message": message }); })
             .catch(err => {
                 // if message is empty, the first block threw the error
-                message += message.length ? aboutMessages.msgImageError : aboutMessages.msgItemError;
+                message += message.length ? aboutMsg.aboutImageItemRemoveError : aboutMsg.aboutItemRemoveError;
                 console.log(message);
                 responseUtilities.sendJsonResponse(res, err, { "message": message });
             });

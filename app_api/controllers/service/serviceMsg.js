@@ -21,33 +21,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-var mongoose = require('mongoose');
-var AboutModel = mongoose.model('about');
-var AboutImageModel = mongoose.model('aboutImage');
-
-var aboutFunctions =  {
-
-    deleteAboutWithId : function (id) {
-
-        return new Promise((resolve, reject) => {
-
-            AboutModel.findByIdAndDelete({ "_id": id }).exec(function (err, result) {
-                err ? reject(err) : resolve(result)
-            });
-
-        });
-
-    },
-    deleteImageWithAboutId : function (id) {
-
-        return new Promise((resolve, reject) => {
-
-            AboutImageModel.findOneAndDelete({ aboutId: id }).exec(function (err, result) {
-                err ? reject(err) : resolve(result)
-            });
-
-        });
-    }
+var serviceMsg =  {
+    serviceErrorDescription : "Error description:",
+    serviceItemNotFound : "Service item not found.",
+    serviceItemCreatedSuccess : "Service item has been created successful.",
+    serviceItemRemoveError : 'Error at deleting a service item.',
+    serviceItemCreatedError : "Error at creating a service item.",
+    serviceItemUpdatedSuccess : "Service item has been updated successful.",
+    serviceItemUpdatedError : "Error at updating a service item.",
+    serviceItemRemoveSuccess : 'Service item has been removed successful.',
+    idNotValidError : 'Service item id is not valid.'
 }
 
-module.exports = aboutFunctions;
+module.exports = serviceMsg;

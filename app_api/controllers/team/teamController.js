@@ -3,6 +3,7 @@ var TeamModel = mongoose.model('team');
 var TeamImageModel = mongoose.model('teamMemberImage');
 var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 var responseUtilities = require("../../lib/agency/util/responseUtilities");
+var teamMsg = require("./teamMsg");
 
 module.exports.teamInfo = function (req, res) {
     TeamModel.find().exec(function (err, content) {
@@ -12,15 +13,11 @@ module.exports.teamInfo = function (req, res) {
 
 module.exports.getTeamMemberImages = function (req, res) {
     TeamImageModel.find().exec(function (err, content) {
-
         var users = {};
-
         for (let index = 0; index < content.length; index++) {
             const user = content[index];
             users[user.email] = user.cloudImage;
-
         }
-
         responseUtilities.sendJsonResponse(res, err, { "teamMemberImages": users}  );
     });
 };
@@ -53,48 +50,35 @@ module.exports.members = function (req, res) {
 
 module.exports.getTeamMember = function (req, res) {
 
+    var email = req.params.email;
+    var query = {"members.email": email };
     TeamModel
-        .find({
-            "members.email": req.params.email
-        }, {
-            'members.$': 1
-        })
+        .find( query , { 'members.$': 1} )
         .exec(function (err, content) {
             if (content.length === 0)
-                content = {
-                    "message": "Member not found."
-                };
+                content = {"message": teamMsg.teamMemberNotFound };
             responseUtilities.sendJsonResponse(res, err, content);
         });
 };
 
 module.exports.removeMember = function (req, res) {
     var email = req.body.email;
+    var query = {"members.email": email };
     TeamModel
-        .find({
-            "members.email": email
-        }, {
-            'members.$': 1
-        })
+        .find( query, {'members.$': 1})
         .exec(function (err, result) {
             if (result.length > 0 && typeof result[0].members[0].email === 'string') {
                 var foundEmail = result[0].members[0].email;
                 var foundId = result[0].members[0].id;
 
-                TeamModel.findOne({
-                    'members.email': email
-                }, function (err, result2) {
+                TeamModel.findOne( query, function (err, result2) {
                     result2.members.id(foundId).remove();
                     result2.save().then(
-                        responseUtilities.sendJsonResponse(res, err, {
-                            "message": "Member has been removed successful"
-                        })
+                        responseUtilities.sendJsonResponse(res, err, { "message": teamMsg.teamMemberRemoveSuccess })
                     );
                 });
             } else {
-                responseUtilities.sendJsonResponse(res, err, {
-                    "message": "Member could not be removed. E-mail not found."
-                }, 404);
+                responseUtilities.sendJsonResponse(res, err, { "message": teamMsg.teamMemberRemoveError }, 404);
             }
         });
 };
@@ -102,19 +86,13 @@ module.exports.removeMember = function (req, res) {
 module.exports.addTeamMember = function (req, res) {
 
     var email = req.body.email;
-
+    var query = {"members.email": email };
     // checks if there is already a email
     TeamModel
-        .find({
-            "members.email": email
-        }, {
-            'members.$': 1
-        })
+        .find( query, { 'members.$': 1})
         .exec(function (err, content) {
             if (content.length > 0 && content[0].members[0].email.length >0 ) {
-                responseUtilities.sendJsonResponse(res, err, {
-                    "message": "Member could not be added. E-mail provided is in use."
-                }, 409);
+                responseUtilities.sendJsonResponse(res, err, { "message": teamMsg.teamMemberEmailInUseError }, 409);
             } else {
                 // gets the teaminfo
                 TeamModel.find(TeamModel).exec(
@@ -151,14 +129,10 @@ module.exports.addTeamMember = function (req, res) {
                                 }
                             };
 
-                            console.log(req.body.email);
-
                             //includes the new member
                             TeamModel.updateOne(doc, options, function (err, result) {
-                                var message = "User has been created.";
-                                responseUtilities.sendJsonResponse(res, err, {
-                                    "message": message
-                                });
+                                var message = teamMsg.teamMemberCreatedSuccess;
+                                responseUtilities.sendJsonResponse(res, err, { "message": message });
                             })
                         };
                     }
@@ -187,13 +161,11 @@ module.exports.teamInfoUpdate = function (req, res) {
 
         TeamModel.updateOne(doc, options, function (err, result) {
 
-            var message = "Team info has been updated successful.";
+            var message = teamMsg.teamItemInfoUpdatedSuccess;
             if (!result) {
-                message = "Error at updating the Team info.";
+                message = teamMsg.teamItemInfoUpdatedError;
             }
-            responseUtilities.sendJsonResponse(res, err, {
-                "message": message
-            });
+            responseUtilities.sendJsonResponse(res, err, { "message": message});
 
         });
 
@@ -202,18 +174,17 @@ module.exports.teamInfoUpdate = function (req, res) {
 
 module.exports.addImage = function (req, res) {
 
+    var email = req.body.email;
+    var query = { "members.email": email };
+
     try {
 
         TeamModel
-            .find({
-                "members.email": req.body.email
-            }, {
-                'members.$': 1
-            })
+            .find( query, { 'members.$': 1})
             .exec(function (err, content) {
 
                 if (content.length === 0 ) {
-                    responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. No user found with the provided email.' });
+                    responseUtilities.sendJsonResponse(res, false, { "message": teamMsg.teamImageMemberUpdatedError });
                     return;
                 }
                 else {
@@ -223,7 +194,7 @@ module.exports.addImage = function (req, res) {
                     }
 
                     if (!req.files) {
-                        responseUtilities.sendJsonResponse(res, false, { "message": 'Please provide data.' });
+                        responseUtilities.sendJsonResponse(res, false, { "message": teamMsg.teamImageMemberNoDataError });
                         return;
                     }
 
@@ -235,11 +206,11 @@ module.exports.addImage = function (req, res) {
                         //checking if error occurred
                         if (err) {
 
-                            responseUtilities.sendJsonResponse(res, false, { "message": 'There was a problem uploading image.' });
+                            responseUtilities.sendJsonResponse(res, false, { "message": teamMsg.teamItemImageUploadingError });
 
                         } else if (callback.length >= 1) {
 
-                            responseUtilities.sendJsonResponse(res, false, { "message": 'Image has not been added. File already exist.' });
+                            responseUtilities.sendJsonResponse(res, false, { "message": teamMsg.teamImageMemberFileExistError });
 
                         } else {
 
@@ -261,27 +232,19 @@ module.exports.addImage = function (req, res) {
 
                                 // then create the image file in the database
                                 TeamImageModel.create(imageDetails, (err, created) => {
-
-                                    var message = "Team member image uploaded successfully!!"
-
+                                    var message = teamMsg.teamImageMemberUploadingSuccess;
                                     if (err) {
-
-                                        message = "It could not upload image, try again. Error description: " + err;
-
+                                        message = `${teamMsg.teamImageMemberUploadingError} ${err}`;
                                     }
-
-                                    responseUtilities.sendJsonResponse(res, false, {
-                                        "message": message
-                                    });
-
+                                    responseUtilities.sendJsonResponse(res, false, { "message": message });
                                 });
                             });
                         }
                     });
                 }
             });
-    } catch (execptions) {
-        console.log(execptions);
-        responseUtilities.sendJsonResponse(res, false, { "message": execptions });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJsonResponse(res, false, { "message": err.message });
     }
 }

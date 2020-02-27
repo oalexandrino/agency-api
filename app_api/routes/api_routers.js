@@ -4,7 +4,7 @@ var teamController = require('../controllers/team/teamController');
 var serviceController = require('../controllers/service/serviceController');
 var portfolioController = require('../controllers/portfolio/portfolioController');
 var aboutController = require('../controllers/about/aboutController');
-var agencyWebSiteConfigurationController = require('../controllers/agencyWebSiteConfigurationController');
+var agencyWebSiteConfigurationController = require('../controllers/configuration/agencyWebSiteConfigurationController');
 
 // routes for website general configuration
 router.get('/config/', agencyWebSiteConfigurationController.configListing);

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var WebsiteModel = mongoose.model('agencyWebsiteConfiguration');
-var responseUtilities = require("../lib/agency/util/responseUtilities");
+var responseUtilities = require("../../lib/agency/util/responseUtilities");
 
 module.exports.update = function (req, res) {
 
