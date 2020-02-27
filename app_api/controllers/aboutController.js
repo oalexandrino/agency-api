@@ -60,6 +60,7 @@ module.exports.delete = function (req, res) {
             
             if (!result) {
                 message = "Error at deleting an about item.";
+                responseUtilities.sendJsonResponse(res, err, { "message": message });
             } else {
                 
                 new Promise((resolve, reject) => {
@@ -76,7 +77,6 @@ module.exports.delete = function (req, res) {
                     }
                 );
             }
-            
         });
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });
