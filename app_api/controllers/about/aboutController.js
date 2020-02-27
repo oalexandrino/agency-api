@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var AboutModel = mongoose.model('about');
 var AboutImageModel = mongoose.model('aboutImage');
-var CloudinarySettings = require('../lib/agency/upload/CloudinarySettings');
-var responseUtilities = require("../lib/agency/util/responseUtilities");
-
+var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
+var responseUtilities = require("../../lib/agency/util/responseUtilities");
+var aboutFunctions = require("../about/aboutFunctions");
+var aboutMessages = require("../about/aboutMessages");
 
 module.exports.aboutListing = function (req, res) {
     AboutModel.find().sort({date: 'ascending'}).exec(function (err, content) {
@@ -40,46 +41,6 @@ module.exports.getAboutItem = function (req, res) {
         });
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "Error retrieving an item. About item id is not valid." });
-    }
-};
-
-module.exports.delete = function (req, res) {
-
-    var idAbout = req.params.idAbout;
-    var valid = mongoose.Types.ObjectId.isValid(idAbout);
-
-    if (valid) {
-        
-        var message;
-        
-        AboutModel
-        .findByIdAndDelete({"_id": idAbout})
-        .exec(function (err, result) {
-            
-            message = "About item has been removed successful.";
-            
-            if (!result) {
-                message = "Error at deleting an about item.";
-                responseUtilities.sendJsonResponse(res, err, { "message": message });
-            } else {
-                
-                new Promise((resolve, reject) => {
-                    deleteImage(idAbout);
-                    resolve();
-                }).then(() => {
-                    message += " Its image item has also been removed successful.";
-                    responseUtilities.sendJsonResponse(res, err, { "message": message });
-                }).catch(
-                    error => {
-                        message += " Error trying to remove about image item. ";
-                        message += error.message;
-                        responseUtilities.sendJsonResponse(res, err, { "message": message });
-                    }
-                );
-            }
-        });
-    } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });
     }
 };
 
@@ -245,7 +206,38 @@ module.exports.getAboutImages = function (req, res) {
     });
 };
 
-function deleteImage(idAbout) {
-    var query = { "aboutId": idAbout };
-    AboutImageModel.findOneAndDelete(query).exec(function (err, result) {});
+module.exports.delete = function (req, res) {
+
+    const idAbout = req.params.idAbout;
+
+    if (!mongoose.Types.ObjectId.isValid(idAbout)) {
+        responseUtilities.sendJsonResponse(res, false, { "message": aboutMessages.msgIdError });
+    }
+    else {
+
+        let message = '';
+
+        try {
+            aboutFunctions.deleteAboutWithId(idAbout)
+            .then(() => {
+                // deleteAboutWithId worked
+                message += aboutMessages.msgItemSuccess;
+                console.log(message);
+                return aboutFunctions.deleteImageWithAboutId(idAbout); })
+            .then(() => {
+                // deleteImageWithAboutId worked
+                message += aboutMessages.msgImageSuccess;
+                console.log(message);
+                responseUtilities.sendJsonResponse(res, false, { "message": message }); })
+            .catch(err => {
+                // if message is empty, the first block threw the error
+                message += message.length ? aboutMessages.msgImageError : aboutMessages.msgItemError;
+                console.log(message);
+                responseUtilities.sendJsonResponse(res, err, { "message": message });
+            });
+        } catch (err) {
+            console.log(err.message);
+            responseUtilities.sendJsonResponse(res, err, { "message": err.message });
+        }
+    }
 }

@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
 var TeamImageModel = mongoose.model('teamMemberImage');
-var CloudinarySettings = require('../lib/agency/upload/CloudinarySettings');
-var responseUtilities = require("../lib/agency/util/responseUtilities");
+var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
+var responseUtilities = require("../../lib/agency/util/responseUtilities");
 
 module.exports.teamInfo = function (req, res) {
     TeamModel.find().exec(function (err, content) {

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var ServiceModel = mongoose.model('service');
-var responseUtilities = require("../lib/agency/util/responseUtilities");
+var responseUtilities = require("../../lib/agency/util/responseUtilities");
 
 module.exports.delete = function (req, res) {
 

@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var teamController = require('../controllers/teamController');
-var serviceController = require('../controllers/serviceController');
-var portfolioController = require('../controllers/portfolioController');
-var aboutController = require('../controllers/aboutController');
+var teamController = require('../controllers/team/teamController');
+var serviceController = require('../controllers/service/serviceController');
+var portfolioController = require('../controllers/portfolio/portfolioController');
+var aboutController = require('../controllers/about/aboutController');
 var agencyWebSiteConfigurationController = require('../controllers/agencyWebSiteConfigurationController');
 
 // routes for website general configuration
