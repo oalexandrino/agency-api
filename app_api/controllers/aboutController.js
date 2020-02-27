@@ -49,29 +49,38 @@ module.exports.delete = function (req, res) {
     var valid = mongoose.Types.ObjectId.isValid(idAbout);
 
     if (valid) {
+        
+        var message;
+        
         AboutModel
         .findByIdAndDelete({"_id": idAbout})
         .exec(function (err, result) {
-            var message = "About item has been removed successful.";
+            
+            message = "About item has been removed successful.";
+            
             if (!result) {
                 message = "Error at deleting an about item.";
             } else {
-                // finding and deleting related about image item
-                var query = { "aboutId": idAbout };
-                AboutImageModel.findOneAndDelete(query).exec(function (err, result) {
-                    message = " About image item has been removed successful.";
-                    if (!result) {
-                        message = " Error trying to remove about image item.";
+                
+                new Promise((resolve, reject) => {
+                    deleteImage(idAbout);
+                    resolve();
+                }).then(() => {
+                    message += " Its image item has also been removed successful.";
+                    responseUtilities.sendJsonResponse(res, err, { "message": message });
+                }).catch(
+                    error => {
+                        message += " Error trying to remove about image item. ";
+                        message += error.message;
+                        responseUtilities.sendJsonResponse(res, err, { "message": message });
                     }
-                });
+                );
             }
-            responseUtilities.sendJsonResponse(res, err, {"message": message});
+            
         });
     } else {
         responseUtilities.sendJsonResponse(res, false, { "message": "About item id is not valid." });
     }
-
-
 };
 
 module.exports.update = function (req, res) {
@@ -235,3 +244,8 @@ module.exports.getAboutImages = function (req, res) {
         responseUtilities.sendJsonResponse(res, err, { "aboutImages": abouts}  );
     });
 };
+
+function deleteImage(idAbout) {
+    var query = { "aboutId": idAbout };
+    AboutImageModel.findOneAndDelete(query).exec(function (err, result) {});
+}
