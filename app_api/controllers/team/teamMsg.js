@@ -38,7 +38,8 @@ var teamMsg =  {
     teamImageMemberUploadingError : "There was a problem uploading image.",
     teamItemInfoUpdatedSuccess : "Team info section has been updated successful.",
     teamItemInfoUpdatedError : "Error at updating the Team info.",
-    idNotValidError : "Team member id is not valid."
+    idNotValidError : "Team member id is not valid.",
+    teamMemberImageItemNotFound: "Image not found"
 }
 
 module.exports = teamMsg;

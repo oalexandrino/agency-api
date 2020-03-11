@@ -28,7 +28,6 @@ var app = express();
 
 var allowedOrigins = ['http://localhost:3000',
                       'http://localhost:4200', 'https://agency-angular-express-node.herokuapp.com'];
-
 //Enabling CORS
 app.use(cors({
   origin: function(origin, callback){
