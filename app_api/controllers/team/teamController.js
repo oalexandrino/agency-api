@@ -26,6 +26,7 @@ var TeamModel = mongoose.model('team');
 var TeamImageModel = mongoose.model('teamMemberImage');
 var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 var responseUtilities = require("../../lib/agency/util/responseUtilities");
+var teamFunctions = require("../team/teamFunctions");
 var teamMsg = require("./teamMsg");
 
 module.exports.teamInfo = function (req, res) {
@@ -177,6 +178,36 @@ module.exports.addTeamMember = function (req, res) {
         });
 
 };
+
+module.exports.teamMemberUpdate = function (req, res) {
+
+    var email = req.body.email;
+
+    try {
+        teamFunctions.findTeamMember(email)
+        .then(data => {
+
+            if (data.length === 0) {
+                responseUtilities.sendJsonResponse(res, false, { "message" : teamMsg.teamMemberNotFound });
+            }
+            else {
+                responseUtilities.sendJsonResponse(res, false, data );
+            }
+
+        })
+        .catch(err => {
+            console.log(err.message);
+            responseUtilities.sendJsonResponse(res, err, { "message": err.message });
+        });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJsonResponse(res, err, { "message": err.message });
+    }
+
+
+
+}
+
 
 module.exports.teamInfoUpdate = function (req, res) {
 

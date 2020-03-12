@@ -40,6 +40,7 @@ router.post('/team/members/', teamController.addTeamMember);
 router.get('/team/members/', teamController.members);
 router.delete('/team/members/', teamController.removeMember);
 router.get('/team/members/:email', teamController.getTeamMember);
+router.put('/team/members/', teamController.teamMemberUpdate);
 
 // routes for member images model
 router.post('/team/image/', upload.any(), teamController.addImage);
