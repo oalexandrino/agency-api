@@ -44,6 +44,8 @@ router.get('/team/members/:email', teamController.getTeamMember);
 // routes for member images model
 router.post('/team/image/', upload.any(), teamController.addImage);
 router.get('/team/image/', teamController.getTeamMemberImages);
+router.get('/team/image/:email', teamController.getImage);
+
 
 // routes for team model
 router.get('/team/', teamController.teamInfo);
