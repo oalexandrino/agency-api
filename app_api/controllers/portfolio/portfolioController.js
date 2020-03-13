@@ -12,10 +12,10 @@ module.exports.portfolioListing = function (req, res) {
             snapshot.forEach(doc => {
                 portfolios.push(doc.data());
             });
-            responseUtilities.sendJsonResponse(res, false, {"portfolios": portfolios});
+            responseUtilities.sendJSON(res, false, {"portfolios": portfolios});
         })
         .catch(err => {
-            responseUtilities.sendJsonResponse(res, err, { "message": "Error getting documents" });
+            responseUtilities.sendJSON(res, err, { "message": "Error getting documents" });
         });
 
 };
