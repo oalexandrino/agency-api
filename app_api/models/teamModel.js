@@ -1,42 +1,42 @@
 var mongoose = require('mongoose');
 
 var teamMemberModelSchema = new mongoose.Schema({
-    "_id": mongoose.SchemaTypes.ObjectId,
+     _id: false,
     "email": {
         "type": String,
         "required": true,
         "min": 5,
-        "max": 20
+        "max": 50
     },
     "name": {
         "type": String,
         "required": true,
         "min": 5,
-        "max": 20
+        "max": 256
     },
     "role": {
         "type": String,
         "required": true,
         "min": 20,
-        "max": 50
+        "max": 256
     },
     "twitter": {
         "type": String,
         "required": true,
-        "min": 20,
-        "max": 50
+        "min": 1,
+        "max": 100
     },
     "facebook": {
         "type": String,
         "required": true,
-        "min": 20,
-        "max": 50
+        "min": 1,
+        "max": 100
     },
     "linkedin": {
         "type": String,
         "required": true,
-        "min": 20,
-        "max": 50
+        "min": 1,
+        "max": 100
     },
 });
 
@@ -63,4 +63,4 @@ var teamModelSchema = new mongoose.Schema({
 }, { collection: 'team' });
 
 teamModelSchema.set('collection', 'team');
-mongoose.model('team', teamModelSchema);
+mongoose.model('team', teamModelSchema)

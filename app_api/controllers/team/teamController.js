@@ -105,7 +105,6 @@ module.exports.removeMember = function (req, res) {
         .find(query, { 'members.$': 1 })
         .exec(function (err, result) {
             if (result.length > 0 && typeof result[0].members[0].email === 'string') {
-                var foundEmail = result[0].members[0].email;
                 var foundId = result[0].members[0].id;
 
                 TeamModel.findOne(query, function (err, result2) {
@@ -138,8 +137,6 @@ module.exports.addTeamMember = function (req, res) {
                             responseUtilities.sendJSON(res, err, teamInfo);
                         } else {
 
-                            const email = req.body.email;
-
                             teamInfo[0].members.push({
                                 email: req.body.email,
                                 name: req.body.name,
@@ -149,16 +146,11 @@ module.exports.addTeamMember = function (req, res) {
                                 linkedin: req.body.linkedin
                             });
 
-                            var membersLength = teamInfo[0].members.length - 1;
-                            var thisMember;
-                            thisMember = teamInfo[0].members[membersLength];
-
                             var doc = {
                                 id: teamInfo[0].description.id
                             };
-                            var options = {
+                            var update = {
                                 $set: {
-                                    id: teamInfo[0].id,
                                     description: teamInfo[0].description,
                                     headline: teamInfo[0].headline,
                                     title: teamInfo[0].title,
@@ -167,7 +159,7 @@ module.exports.addTeamMember = function (req, res) {
                             };
 
                             //includes the new member
-                            TeamModel.updateOne(doc, options, function (err, result) {
+                            TeamModel.updateOne(doc, update, function (err) {
                                 var message = teamMsg.teamMemberCreatedSuccess;
                                 responseUtilities.sendJSON(res, err, { "message": message });
                             })
@@ -199,7 +191,7 @@ module.exports.teamMemberUpdate = function (req, res) {
             }
 
         })
-        .then(() => {
+        .then(data => {
 
             const query = { "members.email": email };
             const options = { new: true };
@@ -213,8 +205,9 @@ module.exports.teamMemberUpdate = function (req, res) {
                     linkedin: linkedin
                 }
             };
-            
-            TeamModel.findOneAndUpdate(query, update, options, function (err, result) {
+
+            var id = mongoose.Types.ObjectId('5e25db5c03bf600017c41abb');
+            TeamModel.findByIdAndUpdate({ "members._id": id }, update, options, function (err, result) {
                 var message = teamMsg.teamMemberUpdatedSuccess;
                 if (!result) {
                     message = teamMsg.teamMemberUpdatedError;
@@ -318,7 +311,7 @@ module.exports.addImage = function (req, res) {
                                 }
 
                                 // then create the image file in the database
-                                TeamImageModel.create(imageDetails, (err, created) => {
+                                TeamImageModel.create(imageDetails, (err) => {
                                     var message = teamMsg.teamImageMemberUploadingSuccess;
                                     if (err) {
                                         message = `${teamMsg.teamImageMemberUploadingError} ${err}`;
