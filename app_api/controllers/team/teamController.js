@@ -171,56 +171,34 @@ module.exports.addTeamMember = function (req, res) {
 
 };
 
-module.exports.teamMemberUpdate = function (req, res) {
+module.exports.teamMemberUpdate = async function (req, res) {
 
-    var email = req.body.email;
-    var name = req.body.name;
-    var role = req.body.role;
-    var twitter = req.body.twitter;
-    var facebook = req.body.facebook;
-    var linkedin = req.body.linkedin;
+    const { email, name, role, twitter, facebook, linkedin } = req.body;
+    const query = { "members.email": email };
+    const options = { new: true, useFindAndModify : false };
+    const update = {
+        $set: {
+            "members.$.email": email,
+            "members.$.name": name,
+            "members.$.role": role,
+            "members.$.twitter": twitter,
+            "members.$.facebook": facebook,
+            "members.$.linkedin": linkedin
+        }
+    };
 
-    teamFunctions.findTeamMember(email)
-        .then(data => {
-
-            if (data.length === 0) {
-                responseUtilities.sendJSON(res, false, { "message": teamMsg.teamMemberNotFound });
-            }
-            else {
-                return data[0];
-            }
-
-        })
-        .then(data => {
-
-            const query = { "members.email": email };
-            const options = { new: true };
-            var update = {
-                $set: {
-                    email: email,
-                    name: name,
-                    role: role,
-                    twitter: twitter,
-                    facebook: facebook,
-                    linkedin: linkedin
-                }
-            };
-
-            var id = mongoose.Types.ObjectId('5e25db5c03bf600017c41abb');
-            TeamModel.findByIdAndUpdate({ "members._id": id }, update, options, function (err, result) {
-                var message = teamMsg.teamMemberUpdatedSuccess;
-                if (!result) {
-                    message = teamMsg.teamMemberUpdatedError;
-                }
-                responseUtilities.sendJSON(res, err, { "message": message });
-            });
-
-        })
-        .catch(err => {
-            console.log(err.message);
-            responseUtilities.sendJSON(res, err, { "message": err.message });
-        });
-}
+    try {
+        const result = await TeamModel.findOneAndUpdate(query, update, options);
+        var message = teamMsg.teamMemberUpdatedSuccess;
+        if (!result) {
+            message = teamMsg.teamMemberNotFound
+        }
+        responseUtilities.sendJSON(res, false, { "message": message });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJSON(res, err, { "message": err.message });
+    }
+};
 
 module.exports.teamInfoUpdate = function (req, res) {
 
