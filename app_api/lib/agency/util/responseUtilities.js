@@ -1,6 +1,6 @@
 var responseUtilities =  {
 
-    sendJsonResponse: function (res, err, content, httpStatus = 200) {
+    sendJSON: function (res, err, content, httpStatus = 200) {
        if (err) {
            content = err;
            httpStatus = 404;

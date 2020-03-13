@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var teamMemberModelSchema = new mongoose.Schema({
+    "_id": mongoose.SchemaTypes.ObjectId,
     "email": {
         "type": String,
         "required": true,

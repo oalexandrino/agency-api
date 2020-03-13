@@ -32,7 +32,7 @@ var aboutMsg = require("./aboutMsg");
 module.exports.aboutListing = function (req, res) {
     AboutModel.find().sort({date: 'ascending'}).exec(function (err, content) {
 
-        responseUtilities.sendJsonResponse(res, err, { "abouts": content });
+        responseUtilities.sendJSON(res, err, { "abouts": content });
     });
 };
 
@@ -46,7 +46,7 @@ module.exports.save = function (req, res) {
             if (!result) {
                 message = aboutMsg.aboutItemCreatedError;
             }
-            responseUtilities.sendJsonResponse(res, err, { "message": message });
+            responseUtilities.sendJSON(res, err, { "message": message });
     });
 };
 
@@ -60,10 +60,10 @@ module.exports.getAboutItem = function (req, res) {
             if (!result) {
                 result = data;
             }
-            responseUtilities.sendJsonResponse(res, err, result);
+            responseUtilities.sendJSON(res, err, result);
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
     }
 };
 
@@ -89,10 +89,10 @@ module.exports.update = function (req, res) {
                 message = aboutMsg.aboutItemUpdatedError;
             }
 
-            responseUtilities.sendJsonResponse(res, err, { "message": message });
+            responseUtilities.sendJSON(res, err, { "message": message });
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
     }
 
 };
@@ -111,7 +111,7 @@ module.exports.addImage = function (req, res) {
             .exec(function (err, content) {
 
                 if (content.length === 0 ) {
-                    responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutItemNotFound });
+                    responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutItemNotFound });
                     return;
                 }
                 else {
@@ -121,7 +121,7 @@ module.exports.addImage = function (req, res) {
                     }
 
                     if (!req.files) {
-                        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemNoFileProvidedError });
+                        responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemNoFileProvidedError });
                         return;
                     }
 
@@ -132,9 +132,9 @@ module.exports.addImage = function (req, res) {
 
                         //checking if error occurred
                         if (err) {
-                            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemUploadError });
+                            responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemUploadError });
                         } else if (callback.length >= 1) {
-                            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.aboutImageItemFileAlreadyExistError });
+                            responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemFileAlreadyExistError });
                         } else {
 
                             var imageDetails = {
@@ -159,12 +159,12 @@ module.exports.addImage = function (req, res) {
                                     var message = aboutMsg.aboutImageItemUploadSuccess;
                                     if (err) {
                                         message = `${aboutMsg.aboutImageItemUploadError} ${aboutMsg.aboutErrorDescription}  ${err}`;
-                                        responseUtilities.sendJsonResponse(res, false, {
+                                        responseUtilities.sendJSON(res, false, {
                                             "message": message
                                         });
                                     }
                                     else {
-                                      responseUtilities.sendJsonResponse(res, false, {
+                                      responseUtilities.sendJSON(res, false, {
                                           "message": message , "aboutId" : aboutId, "cloudImage" : result.url
                                       });
                                     }
@@ -175,11 +175,11 @@ module.exports.addImage = function (req, res) {
                 }
             });
         } else {
-            responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
+            responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
         }
     } catch (err) {
         console.log(err.message);
-        responseUtilities.sendJsonResponse(res, false, { "message": err.message });
+        responseUtilities.sendJSON(res, false, { "message": err.message });
     }
 }
 
@@ -193,10 +193,10 @@ module.exports.getImage = function (req, res) {
           if (!result) {
               result = data;
           }
-          responseUtilities.sendJsonResponse(res, err, result);
+          responseUtilities.sendJSON(res, err, result);
       });
   } else {
-      responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
+      responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
   }
 
 }
@@ -212,7 +212,7 @@ module.exports.getAboutImages = function (req, res) {
 
         }
 
-        responseUtilities.sendJsonResponse(res, err, { "aboutImages": abouts}  );
+        responseUtilities.sendJSON(res, err, { "aboutImages": abouts}  );
     });
 };
 
@@ -221,7 +221,7 @@ module.exports.delete = function (req, res) {
     const idAbout = req.params.idAbout;
 
     if (!mongoose.Types.ObjectId.isValid(idAbout)) {
-        responseUtilities.sendJsonResponse(res, false, { "message": aboutMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
     }
     else {
 
@@ -238,16 +238,16 @@ module.exports.delete = function (req, res) {
                 // deleteImageWithAboutId worked
                 message += aboutMsg.aboutImageItemRemoveSuccess;
                 console.log(message);
-                responseUtilities.sendJsonResponse(res, false, { "message": message }); })
+                responseUtilities.sendJSON(res, false, { "message": message }); })
             .catch(err => {
                 // if message is empty, the first block threw the error
                 message += message.length ? aboutMsg.aboutImageItemRemoveError : aboutMsg.aboutItemRemoveError;
                 console.log(message);
-                responseUtilities.sendJsonResponse(res, err, { "message": message });
+                responseUtilities.sendJSON(res, err, { "message": message });
             });
         } catch (err) {
             console.log(err.message);
-            responseUtilities.sendJsonResponse(res, err, { "message": err.message });
+            responseUtilities.sendJSON(res, err, { "message": err.message });
         }
     }
 }

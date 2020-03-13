@@ -29,7 +29,8 @@ var teamFunctions =  {
     findTeamMember : function (email) {
         return new Promise((resolve, reject) => {
             var query = {"members.email": email };
-            TeamModel.find( query, { 'members.$': 1}).exec(function (err, result) {
+            const options = { 'members.$': 1 };
+            TeamModel.find(query, options).exec(function (err, result) {
                 var member = [];
                 if (result.length !== 0 ) {
                     member = result[0].members;
