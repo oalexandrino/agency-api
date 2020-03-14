@@ -24,6 +24,7 @@ THE SOFTWARE.
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
 var TeamMemberImageModel = mongoose.model('teamMemberImage');
+var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 
 var teamFunctions =  {
 
@@ -59,7 +60,33 @@ var teamFunctions =  {
             });
 
         });
+    },
+    findImageMember: function (imageName) {
+        
+        return new Promise((resolve, reject) => {
+            let imageQuery = { imageName: imageName };
+            TeamMemberImageModel.find(imageQuery, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    createImageMember(imageDetails) {
+
+        return new Promise((resolve, reject) => {
+            TeamMemberImageModel.create(imageDetails, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    uploadImageMember(cloudImage) {
+
+        return new Promise((resolve, reject) => {
+            CloudinarySettings.uploads(cloudImage, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
     }
+    
 }
 
 module.exports = teamFunctions;

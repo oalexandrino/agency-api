@@ -251,9 +251,11 @@ module.exports.addImage = function (req, res) {
         TeamModel
             .find(query, { 'members.$': 1 })
             .exec(function (err, content) {
+                
+                console.log(content);
 
                 if (content.length === 0) {
-                    responseUtilities.sendJSON(res, false, { "message": teamMsg.teamImageMemberUpdatedError });
+                    responseUtilities.sendJSON(res, false, { "message": teamMsg.teamMemberNotFound });
                     return;
                 }
                 else {
@@ -266,19 +268,20 @@ module.exports.addImage = function (req, res) {
                         responseUtilities.sendJSON(res, false, { "message": teamMsg.teamImageMemberNoDataError });
                         return;
                     }
+                    
+                    let imageQuery = { imageName: imageDetails.imageName };
 
                     // check if image-name exist
-                    TeamMemberImageModel.find({
-                        imageName: imageDetails.imageName
-                    }, (err, callback) => {
+                    TeamMemberImageModel.find(imageQuery, (err, result) => {
 
                         //checking if error occurred
                         if (err) {
 
                             responseUtilities.sendJSON(res, false, { "message": teamMsg.teamItemImageUploadingError });
 
-                        } else if (callback.length >= 1) {
-
+                        } else if (result.length >= 1) {
+                            
+                            console.log(result);
                             responseUtilities.sendJSON(res, false, { "message": teamMsg.teamImageMemberFileExistError });
 
                         } else {
