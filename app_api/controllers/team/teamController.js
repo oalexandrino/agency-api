@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
-var TeamImageModel = mongoose.model('teamMemberImage');
+var TeamMemberImageModel = mongoose.model('teamMemberImage');
 var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 var responseUtilities = require("../../lib/agency/util/responseUtilities");
 var teamFunctions = require("../team/teamFunctions");
@@ -36,7 +36,8 @@ module.exports.teamInfo = function (req, res) {
 };
 
 module.exports.getTeamMemberImages = function (req, res) {
-    TeamImageModel.find().exec(function (err, content) {
+    TeamMemberImageModel.find().exec(function (err, content) {
+        console.log(content);
         var users = {};
         for (let index = 0; index < content.length; index++) {
             const user = content[index];
@@ -49,7 +50,7 @@ module.exports.getTeamMemberImages = function (req, res) {
 module.exports.getImage = function (req, res) {
 
     var query = { "email": req.params.email };
-    TeamImageModel.findOne(query).exec(function (err, result) {
+    TeamMemberImageModel.findOne(query).exec(function (err, result) {
         var data = { "message": teamMsg.teamMemberImageItemNotFound };
         if (!result) {
             result = data;
@@ -267,7 +268,7 @@ module.exports.addImage = function (req, res) {
                     }
 
                     // check if image-name exist
-                    TeamImageModel.find({
+                    TeamMemberImageModel.find({
                         imageName: imageDetails.imageName
                     }, (err, callback) => {
 
@@ -299,7 +300,7 @@ module.exports.addImage = function (req, res) {
                                 }
 
                                 // then create the image file in the database
-                                TeamImageModel.create(imageDetails, (err) => {
+                                TeamMemberImageModel.create(imageDetails, (err) => {
                                     var message = teamMsg.teamImageMemberUploadingSuccess;
                                     if (err) {
                                         message = `${teamMsg.teamImageMemberUploadingError} ${err}`;

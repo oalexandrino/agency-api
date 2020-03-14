@@ -23,7 +23,7 @@ THE SOFTWARE.
 */
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
-var TeamImageModel = mongoose.model('teamMemberImage');
+var TeamMemberImageModel = mongoose.model('teamMemberImage');
 
 var teamFunctions =  {
 
@@ -54,7 +54,7 @@ var teamFunctions =  {
 
         return new Promise((resolve, reject) => {
 
-            TeamImageModel.findOneAndDelete({ email: email }).exec(function (err, result) {
+            TeamMemberImageModel.findOneAndDelete({ email: email }).exec(function (err, result) {
                 err ? reject(err) : resolve(result)
             });
 
