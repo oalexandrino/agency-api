@@ -31,18 +31,18 @@ module.exports.update = function (req, res) {
                 if (!result) {
                     message = "Error at updating general configurations.";
                 }
-                responseUtilities.sendJsonResponse(res, err, { "message": message });
+                responseUtilities.sendJSON(res, err, { "message": message });
             }
             );
         }
         else {
-            responseUtilities.sendJsonResponse(res, err, { "message": "Error at updating general configurations. Problem at finding the document." });
+            responseUtilities.sendJSON(res, err, { "message": "Error at updating general configurations. Problem at finding the document." });
         }
     });
 };
 
 module.exports.configListing = function (req, res) {
     WebsiteModel.find().exec(function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, { "config": content });
+        responseUtilities.sendJSON(res, err, { "config": content });
     });
 };

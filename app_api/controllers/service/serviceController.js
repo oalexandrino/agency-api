@@ -38,10 +38,10 @@ module.exports.delete = function (req, res) {
                 if (!result) {
                     message = serviceMsg.serviceItemRemoveError;
                 }
-                responseUtilities.sendJsonResponse(res, err, { "message": message });
+                responseUtilities.sendJSON(res, err, { "message": message });
             });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": serviceMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": serviceMsg.idNotValidError });
     }
 };
 
@@ -65,12 +65,12 @@ module.exports.update = function (req, res) {
             if (!result) {
                 message = serviceMsg.serviceItemUpdatedError;
             }
-            responseUtilities.sendJsonResponse(res, err, { "message": message });
+            responseUtilities.sendJSON(res, err, { "message": message });
         });
 
     }
     else {
-        responseUtilities.sendJsonResponse(res, false, { "message": serviceMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": serviceMsg.idNotValidError });
     }
 
 };
@@ -85,10 +85,10 @@ module.exports.getService = function (req, res) {
             if (!result) {
                 result = data;
             }
-            responseUtilities.sendJsonResponse(res, err, result);
+            responseUtilities.sendJSON(res, err, result);
         });
     } else {
-        responseUtilities.sendJsonResponse(res, false, { "message": serviceMsg.idNotValidError });
+        responseUtilities.sendJSON(res, false, { "message": serviceMsg.idNotValidError });
     }
 
 };
@@ -96,7 +96,7 @@ module.exports.getService = function (req, res) {
 module.exports.serviceListing = function (req, res) {
 
     ServiceModel.find().exec(function (err, content) {
-        responseUtilities.sendJsonResponse(res, err, { "services": content });
+        responseUtilities.sendJSON(res, err, { "services": content });
     });
 
 };
@@ -112,7 +112,7 @@ module.exports.save = function (req, res) {
             if (!result) {
                 message = serviceMsg.serviceItemCreatedError;
             }
-            responseUtilities.sendJsonResponse(res, err, { "message": message });
+            responseUtilities.sendJSON(res, err, { "message": message });
     });
 
 };
