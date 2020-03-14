@@ -7,7 +7,7 @@ var responseUtilities =  {
        }
 
        console.log(content);
-        
+
        res.status(httpStatus);
        res.json(content);
     },
@@ -21,11 +21,8 @@ var responseUtilities =  {
 
         res.status(httpStatus);
         res.json(content);
-        
-    }
-    
-    
 
+    }
 }
 
 module.exports = responseUtilities;

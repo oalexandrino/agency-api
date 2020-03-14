@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 var mongoose = require('mongoose');
 var TeamModel = mongoose.model('team');
+var TeamImageModel = mongoose.model('teamMemberImage');
 
 var teamFunctions =  {
 
@@ -37,6 +38,26 @@ var teamFunctions =  {
                 }
                 err ? reject(err) : resolve(member);
             });
+        });
+    },
+    removeMember: function (email) {
+        return new Promise((resolve, reject) => {
+            const query = {};
+            const pull = { $pull: { members: { email: email } } };
+            const options = { new: true };
+            TeamModel.updateOne(query, pull, options).exec(function (err, result) {
+                err ? reject(err) : resolve(result);
+            });
+        });
+    },
+    deleteImageMember: function (email) {
+
+        return new Promise((resolve, reject) => {
+
+            TeamImageModel.findOneAndDelete({ email: email }).exec(function (err, result) {
+                err ? reject(err) : resolve(result)
+            });
+
         });
     }
 }

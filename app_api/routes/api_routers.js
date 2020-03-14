@@ -38,7 +38,7 @@ router.put('/service/', serviceController.update);
 // routes for member model
 router.post('/team/members/', teamController.addTeamMember);
 router.get('/team/members/', teamController.members);
-router.delete('/team/members/', teamController.removeMember);
+router.delete('/team/members/:email', teamController.removeMember);
 router.get('/team/members/:email', teamController.getTeamMember);
 router.put('/team/members/', teamController.teamMemberUpdate);
 

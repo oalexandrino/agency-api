@@ -98,25 +98,35 @@ module.exports.getTeamMember = function (req, res) {
         });
 };
 
-module.exports.removeMember = function (req, res) {
-    var email = req.body.email;
-    var query = { "members.email": email };
-    TeamModel
-        .find(query, { 'members.$': 1 })
-        .exec(function (err, result) {
-            if (result.length > 0 && typeof result[0].members[0].email === 'string') {
-                var foundId = result[0].members[0].id;
+module.exports.removeMember = async function (req, res) {
+    
+    const email = req.params.email;
+    let message = '';
 
-                TeamModel.findOne(query, function (err, result2) {
-                    result2.members.id(foundId).remove();
-                    result2.save().then(
-                        responseUtilities.sendJSON(res, err, { "message": teamMsg.teamMemberRemoveSuccess })
-                    );
-                });
-            } else {
-                responseUtilities.sendJSON(res, err, { "message": teamMsg.teamMemberRemoveError }, 404);
-            }
-        });
+    try {
+        teamFunctions.removeMember(email)
+            .then(() => {
+                // first block: deleting an entry in team model. This entry is an array item.
+                message += teamMsg.teamMemberRemoveSuccess;
+                console.log(message);
+                return teamFunctions.deleteImageMember(email);
+            })
+            .then(() => {
+                // deleteImageMember from the previous block has worked. So, concatenate msg and return it
+                message += teamMsg.teamMemberImageRemoveSuccess;
+                console.log(message);
+                responseUtilities.sendJSON(res, false, { "message": message , "error" : "false" });
+            })
+            .catch(err => {
+                // if message variable is empty, the first block threw the error
+                message += message.length ? teamMsg.teamMemberImageRemoveError : teamMsg.teamMemberRemoveError;
+                console.log(message);
+                responseUtilities.sendJSON(res, err, { "message": message, "error": "true" });
+            });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJSON(res, err, { "message": err.message, "error": "true" });
+    }
 };
 
 module.exports.addTeamMember = function (req, res) {
