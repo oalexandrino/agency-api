@@ -320,3 +320,62 @@ module.exports.addImage = function (req, res) {
         responseUtilities.sendJSON(res, false, { "message": err.message });
     }
 }
+
+module.exports.addImage2 = function (req, res) {
+
+    const email = req.body.email;
+    const imageName = req.body.imageName;
+    let message = '';
+    let cloudImage = req.files[0].path;
+    let cloudImageFound = '';
+    let deleteCurrentFile = false;
+    
+    try {
+        teamFunctions.findTeamMember(email)
+            .then(() => {
+                console.log("Team member found.");
+                return teamFunctions.findImageMember(imageName);
+            })
+            .then(teamMemberImage => {
+                if (teamMemberImage.length >= 1) {
+                    console.log("Image for this member is found");
+                    deleteCurrentFile = true;
+                    cloudImageFound = teamMemberImage[0].cloudImage;
+                } else {
+                    console.log("Image for this member not found");
+                }
+                return teamFunctions.uploadImageMember(cloudImage);
+            })
+            .then(cloudinaryResults => {
+                console.log("Image uploaded to Cloudinary.");
+                var imageDetails = {
+                    email: email,
+                    imageName: imageName,
+                    cloudImage: cloudinaryResults.url,
+                    imageId: cloudinaryResults.id
+                }
+                return teamFunctions.createImageMember(imageDetails);
+            })
+            .then(result => {
+                if (result) {
+                    console.log("Image document has been created.");    
+                }
+                
+                if (deleteCurrentFile) {
+                    console.log("TO DO delete image");
+                }
+                var message = teamMsg.teamImageMemberUploadingSuccess;
+                responseUtilities.sendJSON(res, false, { "message": message, "error" : "false" });
+            })
+            .catch(err => {
+                // if message variable is empty, the first block threw the error
+                message += teamMsg.teamImageMemberUploadingError;
+                console.log(message);
+                responseUtilities.sendJSON(res, err, { "message": message, "error": "true" });
+            });
+    } catch (err) {
+        console.log(err.message);
+        responseUtilities.sendJSON(res, err, { "message": err.message, "error": "true" });
+    }
+
+}

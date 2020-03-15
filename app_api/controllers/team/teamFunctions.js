@@ -79,10 +79,9 @@ var teamFunctions =  {
         });
     },
     uploadImageMember(cloudImage) {
-
         return new Promise((resolve, reject) => {
-            CloudinarySettings.uploads(cloudImage, (err, result) => {
-                err ? reject(err) : resolve(result)
+            CloudinarySettings.uploads(cloudImage).then((result) => {
+                resolve(result);
             });
         });
     }
