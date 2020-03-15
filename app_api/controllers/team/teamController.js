@@ -107,7 +107,7 @@ module.exports.getTeamMember = function (req, res) {
 };
 
 module.exports.removeMember = async function (req, res) {
-    
+
     const email = req.params.email;
     let message = '';
 
@@ -258,7 +258,7 @@ module.exports.addImage = function (req, res) {
         TeamModel
             .find(query, { 'members.$': 1 })
             .exec(function (err, content) {
-                
+
                 console.log(content);
 
                 if (content.length === 0) {
@@ -275,7 +275,7 @@ module.exports.addImage = function (req, res) {
                         responseUtilities.sendJSON(res, false, { "message": teamMsg.teamImageMemberNoDataError });
                         return;
                     }
-                    
+
                     let imageQuery = { imageName: imageDetails.imageName };
 
                     // check if image-name exist
@@ -287,7 +287,7 @@ module.exports.addImage = function (req, res) {
                             responseUtilities.sendJSON(res, false, { "message": teamMsg.teamItemImageUploadingError });
 
                         } else if (result.length >= 1) {
-                            
+
                             console.log(result);
                             responseUtilities.sendJSON(res, false, { "message": teamMsg.teamImageMemberFileExistError });
 
@@ -336,7 +336,8 @@ module.exports.addImage2 = function (req, res) {
     let cloudImage = req.files[0].path;
     let cloudImageFound = '';
     let deleteCurrentFile = false;
-    
+    let newcloudImageURL;
+
     try {
         teamFunctions.findTeamMember(email)
             .then(teamMember => {
@@ -358,7 +359,8 @@ module.exports.addImage2 = function (req, res) {
                 return teamFunctions.uploadImageMember(cloudImage);
             })
             .then(cloudinaryResults => {
-                console.log("AddImage: Image uploaded to Cloudinary.");
+                console.log("AddImage: Image uploaded to Cloudinary");
+                newcloudImageURL = cloudinaryResults.url;
                 var imageDetails = {
                     email: email,
                     imageName: imageName,
@@ -378,7 +380,7 @@ module.exports.addImage2 = function (req, res) {
             .then(() => {
                 console.log("AddImage: Image record for the current member has been created.");
                 var message = teamMsg.teamImageMemberUploadingSuccess;
-                responseUtilities.sendJSON(res, false, { "message": message, "error" : "false" });
+                responseUtilities.sendJSON(res, false, { "message": message, "cloudImage" : newcloudImageURL, "error" : "false" });
             })
             .catch(err => {
                 // if message variable is empty, the first block threw the error
