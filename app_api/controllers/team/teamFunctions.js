@@ -84,8 +84,23 @@ var teamFunctions =  {
                 resolve(result);
             });
         });
-    }
-    
+    },
+    getTeamMemberImageByURL(URL) {
+        return new Promise((resolve, reject) => {
+            let imageQuery = { cloudImage: URL };
+            TeamMemberImageModel.find(imageQuery, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    deleteTeamMemberImageByURL(URL) {
+        return new Promise((resolve, reject) => {
+            let imageQuery = { cloudImage: URL };
+            TeamMemberImageModel.findOneAndDelete(imageQuery).exec(function (err, result) {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
 }
 
 module.exports = teamFunctions;

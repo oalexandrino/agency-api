@@ -35,6 +35,13 @@ module.exports.teamInfo = function (req, res) {
     });
 };
 
+module.exports.getTeamMemberImagesAllFields = function (req, res) {
+    TeamMemberImageModel.find().exec(function (err, content) {
+        console.log(content);
+        responseUtilities.sendJSON(res, err, content );
+    });
+};
+
 module.exports.getTeamMemberImages = function (req, res) {
     TeamMemberImageModel.find().exec(function (err, content) {
         console.log(content);
@@ -332,38 +339,44 @@ module.exports.addImage2 = function (req, res) {
     
     try {
         teamFunctions.findTeamMember(email)
-            .then(() => {
-                console.log("Team member found.");
-                return teamFunctions.findImageMember(imageName);
+            .then(teamMember => {
+                if (teamMember) {
+                    console.log("AddImage: Team member found.");
+                    return teamFunctions.findImageMember(imageName);
+                } else {
+                    throw new Error('Error: team member not found.');
+                }
             })
             .then(teamMemberImage => {
                 if (teamMemberImage.length >= 1) {
-                    console.log("Image for this member is found");
+                    console.log("AddImage: Image for this member was found.");
                     deleteCurrentFile = true;
                     cloudImageFound = teamMemberImage[0].cloudImage;
                 } else {
-                    console.log("Image for this member not found");
+                    console.log("AddImage: Image for this member not found.");
                 }
                 return teamFunctions.uploadImageMember(cloudImage);
             })
             .then(cloudinaryResults => {
-                console.log("Image uploaded to Cloudinary.");
+                console.log("AddImage: Image uploaded to Cloudinary.");
                 var imageDetails = {
                     email: email,
                     imageName: imageName,
                     cloudImage: cloudinaryResults.url,
                     imageId: cloudinaryResults.id
                 }
-                return teamFunctions.createImageMember(imageDetails);
-            })
-            .then(result => {
-                if (result) {
-                    console.log("Image document has been created.");    
-                }
-                
                 if (deleteCurrentFile) {
-                    console.log("TO DO delete image");
+                    teamFunctions.deleteTeamMemberImageByURL(cloudImageFound).then((result) => {
+                        console.log("AddImage: Old image record for the current member has been deleted.");
+                        return teamFunctions.createImageMember(imageDetails);
+                    });
                 }
+                else {
+                    return teamFunctions.createImageMember(imageDetails);
+                }
+            })
+            .then(() => {
+                console.log("AddImage: Image record for the current member has been created.");
                 var message = teamMsg.teamImageMemberUploadingSuccess;
                 responseUtilities.sendJSON(res, false, { "message": message, "error" : "false" });
             })

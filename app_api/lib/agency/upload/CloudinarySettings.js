@@ -11,15 +11,10 @@ cloudinary.config({
 exports.uploads = (file) => {
     return new Promise(resolve => {
         cloudinary.uploader.upload(file, (result) => {
-            
-            console.log(result);
-            
-            resolve({
-                url: result.url,
-                id: result.public_id
-            })
+            console.log("Image has been uploaded to Cloudinary service.");
+            resolve({ url: result.url, id: result.public_id });
         }, {
             resource_type: "auto"
-        })
-    })
+        });
+    });
 }

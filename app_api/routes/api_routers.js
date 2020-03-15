@@ -45,6 +45,7 @@ router.put('/team/members/', teamController.teamMemberUpdate);
 // routes for member images model
 router.post('/team/image/', upload.any(), teamController.addImage2);
 router.get('/team/image/', teamController.getTeamMemberImages);
+router.get('/team/imageMember/', teamController.getTeamMemberImagesAllFields);
 router.get('/team/image/:email', teamController.getImage);
 
 
