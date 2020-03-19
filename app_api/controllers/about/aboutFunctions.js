@@ -49,6 +49,14 @@ var aboutFunctions =  {
 
         });
     },
+    findAboutItem: function (id) {
+        return new Promise((resolve, reject) => {
+            let query = { "_id": id };
+            AboutModel.findById(query).exec(function (err, result) {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
     findImage: function (imageName) {
         return new Promise((resolve, reject) => {
             let imageQuery = { imageName: imageName };

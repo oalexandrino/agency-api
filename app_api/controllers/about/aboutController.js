@@ -97,7 +97,7 @@ module.exports.update = function (req, res) {
 
 };
 
-module.exports.addImage = function (req, res) {
+module.exports.addImage2 = function (req, res) {
 
     try {
         console.log(req.headers);
@@ -250,4 +250,78 @@ module.exports.delete = function (req, res) {
             responseUtilities.sendJSON(res, err, { "message": err.message });
         }
     }
+}
+
+module.exports.addImage = function (req, res) {
+
+    var aboutId = req.body.aboutId;
+    const imageName = req.body.imageName;
+    let message = '';
+    let cloudImage = req.files[0].path;
+    let cloudImageFound = '';
+    let deleteCurrentFile = false;
+    let newcloudImageURL;
+    const valid = mongoose.Types.ObjectId.isValid(aboutId);
+
+    if (valid) {
+        try {
+            aboutFunctions.findAboutItem(aboutId)
+                .then(aboutItem => {
+                    if (aboutItem) {
+                        console.log("AddImage: Item  found.");
+                        return aboutFunctions.findImage(imageName);
+                    } else {
+                        throw new Error('Error: item not found.');
+                    }
+                })
+                .then(aboutImage => {
+                    if (aboutImage.length >= 1) {
+                        console.log("AddImage: Image for this item was found.");
+                        deleteCurrentFile = true;
+                        cloudImageFound = aboutImage[0].cloudImage;
+                    } else {
+                        console.log("AddImage: Image for this item not found.");
+                    }
+                    return aboutFunctions.upload(cloudImage);
+                })
+                .then(cloudinaryResults => {
+                    console.log("AddImage: Image uploaded to Cloudinary");
+                    newcloudImageURL = cloudinaryResults.url;
+                    var imageDetails = {
+                        aboutId: aboutId,
+                        imageName: imageName,
+                        cloudImage: cloudinaryResults.url,
+                        imageId: cloudinaryResults.id
+                    }
+                    if (deleteCurrentFile) {
+                        aboutFunctions.deleteImageByURL(cloudImageFound).then((result) => {
+                            console.log("AddImage: Old image record for the current item has been deleted.");
+                            return aboutFunctions.createImage(imageDetails);
+                        });
+                    }
+                    else {
+                        return aboutFunctions.createImage(imageDetails);
+                    }
+                })
+                .then(() => {
+                    console.log("AddImage: Image record for the current item has been created.");
+                    var message = aboutMsg.aboutImageItemUploadSuccess;
+                    responseUtilities.sendJSON(res, false, { "message": message, "cloudImage": newcloudImageURL, "error": "false" });
+                })
+                .catch(err => {
+                    // if message variable is empty, the first block threw the error
+                    message += aboutMsg.aboutImageItemUploadError;
+                    console.log(message);
+                    responseUtilities.sendJSON(res, err, { "message": message, "error": "true" });
+                });
+        } catch (err) {
+            console.log(err.message);
+            responseUtilities.sendJSON(res, err, { "message": err.message, "error": "true" });
+        }
+    } else {
+        responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
+    }
+
+
+
 }
