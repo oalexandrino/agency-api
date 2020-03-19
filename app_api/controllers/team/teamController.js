@@ -276,7 +276,7 @@ module.exports.addImage = function (req, res) {
                 } else {
                     console.log("AddImage: Image for this member not found.");
                 }
-                return teamFunctions.uploadImageMember(cloudImage);
+                return teamFunctions.uploadImage(cloudImage);
             })
             .then(cloudinaryResults => {
                 console.log("AddImage: Image uploaded to Cloudinary");
@@ -290,11 +290,11 @@ module.exports.addImage = function (req, res) {
                 if (deleteCurrentFile) {
                     teamFunctions.deleteTeamMemberImageByURL(cloudImageFound).then((result) => {
                         console.log("AddImage: Old image record for the current member has been deleted.");
-                        return teamFunctions.createImageMember(imageDetails);
+                        return teamFunctions.createImage(imageDetails);
                     });
                 }
                 else {
-                    return teamFunctions.createImageMember(imageDetails);
+                    return teamFunctions.createImage(imageDetails);
                 }
             })
             .then(() => {

@@ -24,6 +24,7 @@ THE SOFTWARE.
 var mongoose = require('mongoose');
 var AboutModel = mongoose.model('about');
 var AboutImageModel = mongoose.model('aboutImage');
+var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 
 var aboutFunctions =  {
 
@@ -47,7 +48,38 @@ var aboutFunctions =  {
             });
 
         });
-    }
+    },
+    findImage: function (imageName) {
+        return new Promise((resolve, reject) => {
+            let imageQuery = { imageName: imageName };
+            AboutImageModel.find(imageQuery, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    createImage(imageDetails) {
+        return new Promise((resolve, reject) => {
+            AboutImageModel.create(imageDetails, (err, result) => {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    upload(cloudImage) {
+        return new Promise((resolve, reject) => {
+            CloudinarySettings.uploads(cloudImage).then((result) => {
+                resolve(result);
+            });
+        });
+    },
+    deleteImageByURL(URL) {
+        return new Promise((resolve, reject) => {
+            let imageQuery = { cloudImage: URL };
+            AboutImageModel.findOneAndDelete(imageQuery).exec(function (err, result) {
+                err ? reject(err) : resolve(result)
+            });
+        });
+    },
+    
 }
 
 module.exports = aboutFunctions;

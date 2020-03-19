@@ -70,7 +70,7 @@ var teamFunctions =  {
             });
         });
     },
-    createImageMember(imageDetails) {
+    createImage(imageDetails) {
 
         return new Promise((resolve, reject) => {
             TeamMemberImageModel.create(imageDetails, (err, result) => {
@@ -78,7 +78,7 @@ var teamFunctions =  {
             });
         });
     },
-    uploadImageMember(cloudImage) {
+    uploadImage(cloudImage) {
         return new Promise((resolve, reject) => {
             CloudinarySettings.uploads(cloudImage).then((result) => {
                 resolve(result);
