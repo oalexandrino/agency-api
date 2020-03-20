@@ -306,17 +306,17 @@ module.exports.addImage = function (req, res) {
                 .then(() => {
                     console.log("AddImage: Image record for the current item has been created.");
                     var message = aboutMsg.aboutImageItemUploadSuccess;
-                    responseUtilities.sendJSON(res, false, { "message": message, "cloudImage": newcloudImageURL, "error": "false" });
+                    responseUtilities.sendJSON(res, false, { "message": message, "cloudImage": newcloudImageURL});
                 })
                 .catch(err => {
                     // if message variable is empty, the first block threw the error
                     message += aboutMsg.aboutImageItemUploadError;
                     console.log(message);
-                    responseUtilities.sendJSON(res, err, { "message": message, "error": "true" });
+                    responseUtilities.sendJSON(res, err, { "message": message});
                 });
         } catch (err) {
             console.log(err.message);
-            responseUtilities.sendJSON(res, err, { "message": err.message, "error": "true" });
+            responseUtilities.sendJSON(res, err, { "message": err.message});
         }
     } else {
         responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });

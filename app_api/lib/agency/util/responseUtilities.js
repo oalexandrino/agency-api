@@ -5,6 +5,12 @@ var responseUtilities =  {
            content = err;
            httpStatus = 404;
        }
+        
+        if (err) {
+            content["error"] = 'true';
+        } else {
+            content["error"] = 'false';
+        }
 
        console.log(content);
 
