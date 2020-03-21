@@ -24,7 +24,6 @@ THE SOFTWARE.
 var mongoose = require('mongoose');
 var AboutModel = mongoose.model('about');
 var AboutImageModel = mongoose.model('aboutImage');
-var CloudinarySettings = require('../../lib/agency/upload/CloudinarySettings');
 var responseUtilities = require("../../lib/agency/util/responseUtilities");
 var aboutFunctions = require("../about/aboutFunctions");
 var aboutMsg = require("./aboutMsg");
@@ -96,92 +95,6 @@ module.exports.update = function (req, res) {
     }
 
 };
-
-module.exports.addImage2 = function (req, res) {
-
-    try {
-        console.log(req.headers);
-        var aboutId = req.body.aboutId;
-        var valid = mongoose.Types.ObjectId.isValid(aboutId);
-        if (valid) {
-            AboutModel
-            .findById({
-                "_id": aboutId
-            })
-            .exec(function (err, content) {
-
-                if (content.length === 0 ) {
-                    responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutItemNotFound });
-                    return;
-                }
-                else {
-
-                    var imageDetails = {
-                        imageName: req.body.imageName,
-                    }
-
-                    if (!req.files) {
-                        responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemNoFileProvidedError });
-                        return;
-                    }
-
-                    // check if image-name exist
-                    AboutImageModel.find({
-                        imageName: imageDetails.imageName
-                    }, (err, callback) => {
-
-                        //checking if error occurred
-                        if (err) {
-                            responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemUploadError });
-                        } else if (callback.length >= 1) {
-                            responseUtilities.sendJSON(res, false, { "message": aboutMsg.aboutImageItemFileAlreadyExistError });
-                        } else {
-
-                            var imageDetails = {
-                                imageName: req.body.imageName,
-                                cloudImage: req.files[0].path,
-                                imageId: ''
-                            }
-
-                            // if all things went well, to post the image to cloudinary
-                            CloudinarySettings.uploads(imageDetails.cloudImage).then((result) => {
-
-                                var imageDetails = {
-                                    aboutId: aboutId,
-                                    imageName: req.body.imageName,
-                                    cloudImage: result.url,
-                                    imageId: result.id
-                                }
-
-                                // then create the image file in the database
-                                AboutImageModel.create(imageDetails, (err, created) => {
-
-                                    var message = aboutMsg.aboutImageItemUploadSuccess;
-                                    if (err) {
-                                        message = `${aboutMsg.aboutImageItemUploadError} ${aboutMsg.aboutErrorDescription}  ${err}`;
-                                        responseUtilities.sendJSON(res, false, {
-                                            "message": message
-                                        });
-                                    }
-                                    else {
-                                      responseUtilities.sendJSON(res, false, {
-                                          "message": message , "aboutId" : aboutId, "cloudImage" : result.url
-                                      });
-                                    }
-                                });
-                            });
-                        }
-                    });
-                }
-            });
-        } else {
-            responseUtilities.sendJSON(res, false, { "message": aboutMsg.idNotValidError });
-        }
-    } catch (err) {
-        console.log(err.message);
-        responseUtilities.sendJSON(res, false, { "message": err.message });
-    }
-}
 
 module.exports.getImage = function (req, res) {
 
@@ -294,7 +207,7 @@ module.exports.addImage = function (req, res) {
                         imageId: cloudinaryResults.id
                     }
                     if (deleteCurrentFile) {
-                        aboutFunctions.deleteImageByURL(cloudImageFound).then((result) => {
+                        aboutFunctions.deleteImageByURL(cloudImageFound).then(() => {
                             console.log("AddImage: Old image record for the current item has been deleted.");
                             return aboutFunctions.createImage(imageDetails);
                         });

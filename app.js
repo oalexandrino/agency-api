@@ -26,6 +26,7 @@ var path = require('path');
 // express app
 var app = express();
 
+/*
 var allowedOrigins = ['http://localhost:3000',
                       'http://localhost:4200', 'https://agency-angular-express-node.herokuapp.com'];
 //Enabling CORS
@@ -42,6 +43,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+*/
 
 // let the app to get access to static folders
 app.use(express.static(path.join(__dirname, 'public')));

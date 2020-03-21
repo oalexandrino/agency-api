@@ -220,22 +220,23 @@ module.exports.teamMemberUpdate = async function (req, res) {
 
 module.exports.teamInfoUpdate = function (req, res) {
 
+    const { id, description, headline, title } = req.body;
+    
     TeamModel.find().exec(function (err, content) {
 
-        var doc = {
+        var query = {
             id: content[0].description.id
         };
-        var options = {
+        
+        var update = {
             $set: {
-                id: content[0].id,
-                description: req.body.description,
-                headline: req.body.headline,
-                title: req.body.title,
-                members: content[0].members,
+                description: description,
+                headline: headline,
+                title: title
             }
         };
 
-        TeamModel.updateOne(doc, options, function (err, result) {
+        TeamModel.updateOne(query, update, function (err, result) {
 
             var message = teamMsg.teamItemInfoUpdatedSuccess;
             if (!result) {
