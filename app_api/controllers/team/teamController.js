@@ -219,33 +219,21 @@ module.exports.teamMemberUpdate = async function (req, res) {
 };
 
 module.exports.teamInfoUpdate = function (req, res) {
-
-    const { id, description, headline, title } = req.body;
-    
-    TeamModel.find().exec(function (err, content) {
-
-        var query = {
-            id: content[0].description.id
-        };
-        
-        var update = {
-            $set: {
-                description: description,
-                headline: headline,
-                title: title
-            }
-        };
-
-        TeamModel.updateOne(query, update, function (err, result) {
-
-            var message = teamMsg.teamItemInfoUpdatedSuccess;
-            if (!result) {
-                message = teamMsg.teamItemInfoUpdatedError;
-            }
-            responseUtilities.sendJSON(res, err, { "message": message });
-
-        });
-
+    const { description, headline, title } = req.body;
+    var query = {};
+    var update = {
+        $set: {
+            description: description,
+            headline: headline,
+            title: title
+        }
+    };
+    TeamModel.updateOne( query, update, function (err, result) {
+        var message = teamMsg.teamItemInfoUpdatedSuccess;
+        if (!result) {
+            message = teamMsg.teamItemInfoUpdatedError;
+        }
+        responseUtilities.sendJSON(res, err, { "message": message });
     });
 }
 
