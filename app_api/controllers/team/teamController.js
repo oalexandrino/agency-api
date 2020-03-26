@@ -146,7 +146,7 @@ module.exports.addTeamMember = function (req, res) {
         .find(query, { 'members.$': 1 })
         .exec(function (err, content) {
             if (content.length > 0 && content[0].members[0].email.length > 0) {
-                responseUtilities.sendJSON(res, err, { "message": teamMsg.teamMemberEmailInUseError }, 409);
+                responseUtilities.sendJSON(res, err, { "message": teamMsg.teamMemberEmailInUseError, "memberFound" : "true" });
             } else {
                 // gets the teaminfo
                 TeamModel.find(TeamModel).exec(
